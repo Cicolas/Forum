@@ -29,9 +29,9 @@ export function Comment({
 
         <div className="flex items-start gap-2 text-silver-chalice-400">
           <span className="font-bold text-shark-950 cursor-pointer">Responder</span>
-          <span>{dayjs(timestamp).format('HH:mm')}</span>
-          <span>•</span>
-          <span>{dayjs(timestamp).locale("pt-br").format('DD[ de ]MMMM[ de ]YYYY')}</span>
+          <span className="hidden md:inline">{dayjs(timestamp).format('HH:mm')}</span>
+          <span className="hidden md:inline">•</span>
+          <span className="hidden md:inline">{dayjs(timestamp).locale("pt-br").format('DD[ de ]MMMM[ de ]YYYY')}</span>
         </div>
       </div>
     </div>

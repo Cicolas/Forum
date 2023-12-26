@@ -31,9 +31,10 @@ export function Post() {
         </div>
         <h1 className="font-bold text-3.5xl leading-tight">Título</h1>
       </div>
-
-      <LikeButton count={24} orientation="horizontal" state="upvote">
-      </LikeButton>
+      <div className="hidden md:inline">
+        <LikeButton count={24} orientation="horizontal" state="upvote">
+        </LikeButton>
+      </div>
     </div>
 
     <div className="flex flex-col items-start gap-2 self-stretch text-base leading-5 tracking-wider">
