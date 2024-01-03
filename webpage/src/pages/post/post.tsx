@@ -5,8 +5,12 @@ import { LikeButton } from "../../components/LikeButton";
 import { CategoryChips } from "../../components/CategoryChips";
 import { UserLink } from "../../components/UserLink";
 import { Comment } from "./components/Comment";
+import { useParams } from "react-router-dom";
 
 export function Post() {
+  const { postId } = useParams();
+  console.log(postId);
+
   function autoResizeTextArea(ev: FormEvent) {
     const ta = ev.target as HTMLTextAreaElement;
     ta.style.height = "0";
@@ -17,7 +21,7 @@ export function Post() {
     <div className="flex flex-row justify-between items-center self-stretch">
       <div className="flex flex-col items-start gap-1">
         <div className="flex flex-row gap-2 items-center">
-          <UserLink>Nícolas Carvalho</UserLink>
+          <UserLink id="cicolas">Nícolas Carvalho</UserLink>
           <span className="font-light">em</span>
 
           <CategoryChips
@@ -53,7 +57,6 @@ export function Post() {
         <span>12:43</span>
         <span>•</span>
         <span>11 de dezembro de 2023</span>
-        {/* tags */}
       </div>
     </div>
 
@@ -78,6 +81,7 @@ export function Post() {
 
       <Comment
         user={{
+          id: "cicolas",
           name: "José Roberto de Vasconcelos"
         }}
         content="É muito é maça"

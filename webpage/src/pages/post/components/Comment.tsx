@@ -4,7 +4,7 @@ import { UserLink } from "../../../components/UserLink";
 
 type CommentProps = {
   user: {
-    id?: string
+    id: string
     name: string,
   };
   content: string;

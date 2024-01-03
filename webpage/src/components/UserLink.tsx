@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 export type UserLinkProps = {
-  id?: string;
+  id: string;
   children: string;
 }
 

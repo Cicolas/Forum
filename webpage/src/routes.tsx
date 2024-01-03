@@ -6,16 +6,21 @@ import { Root } from './root';
 import { Post } from './pages/post/post';
 
 import 'dayjs/locale/pt-br';
+import { Recent } from './pages/recent/recent';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <Root />,
-    errorElement: <Root />,
+    // errorElement: <Root />,
     children: [
       {
-        path: '/post',
+        path: '/post/:postId',
         element: <Post />
+      },
+      {
+        path: '/recent',
+        element: <Recent />
       }
     ]
   }
