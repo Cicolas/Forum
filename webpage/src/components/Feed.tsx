@@ -12,10 +12,9 @@ type FeedProps = {
 function PostListItem(post: IPost) {
   const navigate = useNavigate();
 
-
-  return <div onClick={() => {navigate(`/post/${post.id}`)}} className="flex flex-col cursor-pointer py-2 items-start gap-1 self-stretch border-b-2 border-solid border-silver-chalice-400 border-opacity-25">
+  return <div className="flex flex-col py-2 items-start gap-1 self-stretch border-b-2 border-solid border-silver-chalice-400 border-opacity-25">
     <div className="flex items-center gap-2">
-      <h2 className="text-2xl font-normal leading-normal">{post.title}</h2>
+      <h2 onClick={() => {navigate(`/post/${post.id}`)}} className="text-2xl font-normal leading-normal cursor-pointer">{post.title}</h2>
 
       <CategoryChips
         name="Brasil"

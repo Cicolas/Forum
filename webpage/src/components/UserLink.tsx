@@ -1,8 +1,9 @@
+import { ReactNode } from "react";
 import { Link } from "react-router-dom";
 
 export type UserLinkProps = {
   id: string;
-  children: string;
+  children: ReactNode;
 }
 
 export function UserLink({ id, children }: UserLinkProps) {

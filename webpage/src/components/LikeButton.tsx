@@ -1,5 +1,6 @@
 import { ArrowCircleDown, ArrowCircleUp } from "phosphor-react";
 import { ReactNode } from "react";
+import { VoteType } from "../shared/types/vote";
 
 const LikeButtonColorClasses = {
   "upvote": "text-olive-drab-700",
@@ -7,20 +8,20 @@ const LikeButtonColorClasses = {
   "undefined": "text-silver-chalice-400",
 }
 
-type LikeButtonWrapper = {
+type LikeButtonWrapperProps = {
   orientation: "vertical" | "horizontal";
   children: ReactNode[];
 }
 
 type LikeButtonProps = {
   count: number;
-  state: "upvote" | "downvote" | "undefined";
+  state: VoteType;
   orientation: "vertical" | "horizontal";
   onLike?: () => void;
   onDislike?: () => void;
 }
 
-function LikeButtonWrapper({ orientation, children }: LikeButtonWrapper) {
+function LikeButtonWrapper({ orientation, children }: LikeButtonWrapperProps) {
   return orientation === "vertical" ?
     <div className="flex flex-col content-center items-center gap-1 p-[0.125rem]">
       {children}
@@ -31,22 +32,31 @@ function LikeButtonWrapper({ orientation, children }: LikeButtonWrapper) {
         {children}
       </div>
     </div>
-
 }
 
-export function LikeButton({ count, state, orientation }: LikeButtonProps) {
+export function LikeButton({ count, state, orientation, onLike, onDislike }: LikeButtonProps) {
+  function handleLike() {
+    if (onLike) onLike();
+  }
+
+  function handleDislike() {
+    if (onDislike) onDislike();
+  }
+
   return (<>
     <LikeButtonWrapper orientation={orientation}>
       <ArrowCircleUp
         className={`${state === "upvote" ? LikeButtonColorClasses["upvote"] : LikeButtonColorClasses["undefined"]} cursor-pointer`}
         size={24}
         weight="bold"
+        onClick={handleLike}
       ></ArrowCircleUp>
       {count}
       <ArrowCircleDown
         className={`${state === "downvote" ? LikeButtonColorClasses["downvote"] : LikeButtonColorClasses["undefined"]} cursor-pointer`}
         size={24}
         weight="bold"
+        onClick={handleDislike}
       ></ArrowCircleDown>
     </LikeButtonWrapper>
   </>)

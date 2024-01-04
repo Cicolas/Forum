@@ -1,15 +1,46 @@
 import { KeyReturn } from "phosphor-react";
 import { Container } from "../../components/Container";
-import { FormEvent } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { LikeButton } from "../../components/LikeButton";
 import { CategoryChips } from "../../components/CategoryChips";
 import { UserLink } from "../../components/UserLink";
 import { Comment } from "./components/Comment";
 import { useParams } from "react-router-dom";
+import { getPostById } from "../../api/postAPI";
+import { IPost } from "../../shared/interfaces/post";
+import dayjs from "dayjs";
+import { dislikePost, likePost } from "../../api/likeAPI";
+import { VoteType } from "../../shared/types/vote";
+import { IComment } from "../../shared/interfaces/comment";
+
+const comment: IComment = {
+  id: "12345",
+  parentId: "1234",
+  author: "cicolas",
+  content: "é muito e massa",
+  rank: {upVotes: [], downVotes: []},
+  createdAt: 0,
+  lastUpdate: 0
+}
 
 export function Post() {
   const { postId } = useParams();
-  console.log(postId);
+
+  const [ post, setPost ] = useState<IPost | undefined>(undefined);
+  const [ likeState, setLikeState ] = useState<VoteType>("undefined");
+
+  const handleVote = (vote: VoteType) => {
+    if (!post) return;
+
+    const action = vote === "upvote" ? likePost : dislikePost;
+
+    action(post?.id).then(() => {
+      if (likeState === vote)
+        setLikeState("undefined");
+      else
+        setLikeState(vote);
+    });
+  }
 
   function autoResizeTextArea(ev: FormEvent) {
     const ta = ev.target as HTMLTextAreaElement;
@@ -17,11 +48,19 @@ export function Post() {
     ta.style.height = `${ta.scrollHeight}px`;
   }
 
+  useEffect(() => {
+    if (!postId) throw new Error("'postId' invalido");
+
+    getPostById(postId)
+      .then(setPost)
+      .catch(err => {throw new Error(err)});
+  }, [postId, setPost]);
+
   return <Container>
     <div className="flex flex-row justify-between items-center self-stretch">
       <div className="flex flex-col items-start gap-1">
         <div className="flex flex-row gap-2 items-center">
-          <UserLink id="cicolas">Nícolas Carvalho</UserLink>
+          <UserLink id="cicolas">{post?.author}</UserLink>
           <span className="font-light">em</span>
 
           <CategoryChips
@@ -33,30 +72,29 @@ export function Post() {
             color="#c23c0c3f"
           ></CategoryChips>
         </div>
-        <h1 className="font-bold text-3.5xl leading-tight">Título</h1>
+        <h1 className="font-bold text-3.5xl leading-tight">{post?.title}</h1>
       </div>
       <div className="hidden md:inline">
-        <LikeButton count={24} orientation="horizontal" state="upvote">
+        <LikeButton
+          count={24}
+          orientation="horizontal"
+          state={likeState}
+          onLike={handleVote.bind(undefined, "upvote")}
+          onDislike={handleVote.bind(undefined, "downvote")}
+        >
         </LikeButton>
       </div>
     </div>
 
     <div className="flex flex-col items-start gap-2 self-stretch text-base leading-5 tracking-wider">
       <p className="text-justify font-roboto">
-        Lorem ipsum dolor sit amet consectetur adipiscing elit Ut et massa mi.
-        Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris.
-        Maecenas vitae mattis tellus. Nullam quis imperdiet augue.
-        Vestibulum auctor ornare leo, non suscipit magna interdum eu.
-        Curabitur pellentesque nibh nibh, at maximus ante fermentum sit amet.
-        Pellentesque commodo lacus at sodales sodales. Quisque sagittis orci ut diam condimentum, vel euismod erat placerat.
-        In iaculis arcu eros, eget tempus orci facilisis id. Praesent lorem orci, mattis non efficitur id, ultricies vel nibh.
-        Sed volutpat lacus vitae gravida viverra. Fusce vel tempor elit. Proin tempus,.
+        {post?.content}
       </p>
 
       <div className="flex flex-row gap-2 text-silver-chalice-400">
-        <span>12:43</span>
+        <span>{dayjs(post?.created_at).format("HH:mm")}</span>
         <span>•</span>
-        <span>11 de dezembro de 2023</span>
+        <span>{dayjs(post?.created_at).locale("pt-br").format('DD[ de ]MMMM[ de ]YYYY')}</span>
       </div>
     </div>
 
@@ -79,14 +117,7 @@ export function Post() {
         </div>
       </div>
 
-      <Comment
-        user={{
-          id: "cicolas",
-          name: "José Roberto de Vasconcelos"
-        }}
-        content="É muito é maça"
-        timestamp={new Date}
-      ></Comment>
+      <Comment value={comment}></Comment>
     </div>
   </Container>
 }

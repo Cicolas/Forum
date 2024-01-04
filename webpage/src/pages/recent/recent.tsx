@@ -1,20 +1,19 @@
+import { useEffect, useState } from "react";
 import { Feed } from "../../components/Feed";
 import { IPost } from "../../shared/interfaces/post";
-
-const posts: IPost[] = [
-  {
-    id: "1234",
-    title: "Teste muito absurdo",
-    author: "Cicolas",
-    content: "",
-    created_at: new Date(),
-    last_update: new Date()
-  }
-]
+import { getAllPost } from "../../api/postAPI";
 
 export function Recent() {
+  const [ posts, setPosts ] = useState<IPost[] | undefined>(undefined);
+
+  useEffect(() => {
+    getAllPost()
+      .then(setPosts)
+      .catch(err => {throw new Error(err)})
+  }, [setPosts]);
+
   return (
-    <Feed title="Últimos posts" posts={posts}>
+    <Feed title="Últimos posts" posts={posts??[]}>
     </Feed>
   )
 }
