@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export function Head() {
   return(
-    <div className="flex h-16 py-4 m-auto justify-between items-center self-stretch px-4 w-full md:px-0 md:w-4/5">
+    <div className="flex h-16 py-4 justify-between items-center self-stretch mx-auto px-4 w-full md:px-0 md:w-4/5">
       <div className="flex w-8 h-[26px] items-center gap-4">
         <ArticleNyTimes size={32} weight="bold"></ArticleNyTimes>
       </div>
