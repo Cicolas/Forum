@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
+import { getAllPost } from "../../api/postAPI";
 import { PostListing } from "../../components/PostListing";
 import { IPost } from "../../shared/interfaces/post";
-import { getAllPost } from "../../api/postAPI";
 
 export function Recent() {
   const [ posts, setPosts ] = useState<IPost[] | undefined>(undefined);

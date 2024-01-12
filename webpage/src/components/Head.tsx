@@ -8,9 +8,9 @@ export function Head() {
         <ArticleNyTimes size={32} weight="bold"></ArticleNyTimes>
       </div>
       <div className="absolute hidden md:flex right-1/2 items-center gap-8 italic cursor-pointer tracking-wider translate-x-1/2">
-        <Link to="home">Home</Link>
-        <Link to="perfil">Perfil</Link>
-        <Link to="sobre">Sobre</Link>
+        <Link to="/feed/recent">Recentes</Link>
+        <Link to="/user">Perfil</Link>
+        <Link to="/about">Sobre</Link>
       </div>
       <div className="flex flex-row gap-4 items-center">
         <span className="hidden md:inline italic font-light">Olá! Elon Musk</span>

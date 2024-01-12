@@ -3,6 +3,7 @@ import { IPost } from "../shared/interfaces/post"
 const posts: IPost[] = [
   {
     id: "1234",
+    rank: {upVotes: [], downVotes: []},
     title: "Teste muito absurdo",
     author: "Cicolas",
     content: "Lorem Ipsun Dolor Sit Amet.",
@@ -18,4 +19,8 @@ export async function getPostById(id: string) {
 
 export async function getAllPost() {
   return posts;
+}
+
+export async function getAllPostCategory(name: string) {
+  return await getAllPost()
 }
