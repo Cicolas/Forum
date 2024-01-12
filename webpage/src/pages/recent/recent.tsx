@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Feed } from "../../components/Feed";
+import { PostListing } from "../../components/PostListing";
 import { IPost } from "../../shared/interfaces/post";
 import { getAllPost } from "../../api/postAPI";
 
@@ -13,7 +13,10 @@ export function Recent() {
   }, [setPosts]);
 
   return (
-    <Feed title="Últimos posts" posts={posts??[]}>
-    </Feed>
+    <PostListing
+      title="Últimos posts"
+      posts={posts??[]}
+    >
+    </PostListing>
   )
 }

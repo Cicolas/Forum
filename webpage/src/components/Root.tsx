@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
-import { Footer } from "./components/Footer";
-import { Head } from "./components/Head";
-import { SearchBar } from "./components/SearchBar";
+import { Footer } from "./Footer";
+import { Head } from "./Head";
+import { SearchBar } from "./SearchBar";
 
 export function Root() {
   return (
