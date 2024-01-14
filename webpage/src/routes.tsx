@@ -9,6 +9,8 @@ import { Feed } from './components/Feed';
 import { Root } from './components/Root';
 import { Recent } from './pages/feed/recent';
 import { Category } from './pages/feed/category';
+import { Login } from './pages/auth/login';
+import { Register } from './pages/auth/register';
 
 const router = createBrowserRouter(
   createRoutesFromElements(<>
@@ -19,8 +21,8 @@ const router = createBrowserRouter(
       </Route>
       <Route path="post/:postId" element={<Post />}></Route>
     </Route>
-    <Route path="/login"></Route>
-    <Route path="/register"></Route>
+    <Route path="/login" element={<Login />}></Route>
+    <Route path="/register" element={<Register />}></Route>
   </>)
 );
 
