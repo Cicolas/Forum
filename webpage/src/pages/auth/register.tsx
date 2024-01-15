@@ -1,9 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Box } from "./components/Box";
 import { ArticleNyTimes } from "phosphor-react";
 
 export function Register() {
-  return <div className="flex justify-center items-center bg-serenade-100 w-full min-h-screen text-shark-950 font-serif">
+  const navigate = useNavigate();
+
+  return <div className="flex justify-center items-center bg-serenade-50 w-full min-h-screen text-shark-950 font-serif">
     <Box>
       <div className="flex flex-col w-full items-start gap-4 p-4 border-2 rounded-lg border-silver-chalice-400">
         <div className="flex justify-center items-center self-stretch">
@@ -47,7 +49,7 @@ export function Register() {
         <button className="flex p-4 justify-center text-center self-stretch rounded-lg bg-shark-950 font-bold text-serenade-100">
           Registrar
         </button>
-        <button className="flex p-4 justify-center text-center self-stretch rounded-lg bg-opacity-25 bg-silver-chalice-400 ">
+        <button onClick={()=> navigate(-1)}  className="flex p-4 justify-center text-center self-stretch rounded-lg bg-opacity-25 bg-silver-chalice-400 ">
           Cancelar
         </button>
       </div>

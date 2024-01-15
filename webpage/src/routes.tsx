@@ -1,10 +1,8 @@
-import ReactDOM from 'react-dom/client'
 import './index.css'
 import { Route, createBrowserRouter, createRoutesFromElements } from 'react-router-dom'
 import { RouterProvider } from 'react-router';
 import { Post } from './pages/post/post';
 
-import 'dayjs/locale/pt-br';
 import { Feed } from './components/Feed';
 import { Root } from './components/Root';
 import { Recent } from './pages/feed/recent';
@@ -26,6 +24,6 @@ const router = createBrowserRouter(
   </>)
 );
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <RouterProvider router={router}/>
-)
+export function Routes() {
+  return <RouterProvider router={router}/>;
+}
