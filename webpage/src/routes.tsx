@@ -9,6 +9,7 @@ import { Recent } from './pages/feed/recent';
 import { Category } from './pages/feed/category';
 import { Login } from './pages/auth/login';
 import { Register } from './pages/auth/register';
+import { UserFeed } from './pages/user/userFeed';
 
 const router = createBrowserRouter(
   createRoutesFromElements(<>
@@ -18,6 +19,7 @@ const router = createBrowserRouter(
         <Route path="category" element={<Category />}></Route>
       </Route>
       <Route path="post/:postId" element={<Post />}></Route>
+      <Route path="user/:userId" element={<UserFeed />}></Route>
     </Route>
     <Route path="/login" element={<Login />}></Route>
     <Route path="/register" element={<Register />}></Route>

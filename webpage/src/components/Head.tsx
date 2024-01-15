@@ -1,11 +1,17 @@
-import { ArticleNyTimes, SignIn } from "phosphor-react";
+import { ArticleNyTimes, SignIn, SignOut } from "phosphor-react";
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
 
 export function Head() {
-  const { authenticated } = useContext(AuthContext);
+  const { authenticated, logout } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  function handleLogout() {
+    logout().then(() =>
+      navigate(0)
+    );
+  }
 
   return (
     <div className="flex h-16 py-4 justify-between items-center self-stretch mx-auto px-4 w-full md:px-0 md:w-4/5">
@@ -22,10 +28,16 @@ export function Head() {
             <span className="hidden md:inline italic font-light">
               Olá! Elon Musk
             </span>
-            <div className="flex w-8 h-8 items-center gap-4 bg-silver-chalice-400 rounded-full overflow-hidden cursor-pointer">
-              <img src="https://avatars.githubusercontent.com/u/32042329?v=4" />
+            <button
+              data-tooltip-id="tooltip-controller"
+              data-tooltip-content="Logout!"
+              onClick={() => handleLogout()}
+              className="group relative flex w-8 h-8 items-center justify-center gap-4 bg-silver-chalice-400 rounded-full overflow-hidden cursor-pointer"
+            >
+              <img className="filter group-hover:brightness-50" src="https://avatars.githubusercontent.com/u/32042329?v=4" />
+              <SignOut className="absolute text-serenade-50 hidden group-hover:inline" weight="bold" size={18}></SignOut>
               {/* <User size={32}></User> */}
-            </div>
+            </button>
           </div>
         ) : (
           <div onClick={() => navigate("/login")} className="flex flex-row gap-2 items-center cursor-pointer">

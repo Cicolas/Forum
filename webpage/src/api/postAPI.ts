@@ -21,6 +21,10 @@ export async function getAllPost() {
   return posts;
 }
 
-export async function getAllPostCategory(name: string) {
+export async function getAllPostByCategory(name: string) {
+  return await getAllPost()
+}
+
+export async function getAllPostByUser(userId: string) {
   return await getAllPost()
 }

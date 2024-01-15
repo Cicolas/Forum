@@ -24,11 +24,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   async function login() {
     authContextValue.authenticated = true;
     console.log(authContextValue);
+    return;
   }
 
   async function logout() {
     authContextValue.authenticated = false;
     console.log(authContextValue);
+    return;
   }
 
   return <AuthContext.Provider value={authContextValue}>

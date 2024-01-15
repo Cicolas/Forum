@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { IPost } from "../shared/interfaces/post";
 import { CategoryChips } from "./CategoryChips";
-import { Container } from "./Container";
 import { UserLink } from "./UserLink";
 import { ReactElement } from "react";
 import { PlusCircle } from "phosphor-react";
@@ -10,6 +9,7 @@ type FeedProps = {
   title?: string;
   posts: IPost[];
   where?: ReactElement;
+  newPostLink?: string;
 };
 
 function PostListItem(post: IPost) {
@@ -37,9 +37,10 @@ function PostListItem(post: IPost) {
 export function PostListing({
   title,
   posts,
-  where
+  where,
+  newPostLink
 }: FeedProps) {
-  return <Container>
+  return <>
     <div className="flex justify-between items-center self-stretch">
       <div className="flex items-end gap-2">
         <h1 className="font-bold text-2xl">{title??""}</h1>
@@ -49,13 +50,17 @@ export function PostListing({
         </>}
       </div>
       <div className="flex items-baseline gap-2 text-silver-chalice-400 italic cursor-pointer">
-        <span>Novo Post</span>
-        <PlusCircle size={20} weight="bold" className="self-center text-shark-950"></PlusCircle>
+        {newPostLink &&
+          <>
+            <Link to={newPostLink}>Novo Post</Link>
+            <PlusCircle size={20} weight="bold" className="self-center text-shark-950"></PlusCircle>
+          </>
+        }
       </div>
     </div>
 
     <div className="flex flex-col items-start self-stretch">
       {posts.map(PostListItem)}
     </div>
-  </Container>
+  </>
 }

@@ -3,6 +3,7 @@ import { Box } from "./components/Box";
 import { ArticleNyTimes } from "phosphor-react";
 import { useContext, useEffect } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
+import { toast } from "react-toastify";
 
 export function Login() {
   const navigate = useNavigate();
@@ -12,8 +13,14 @@ export function Login() {
     if (authenticated) navigate(-1);
   }, [ authenticated, navigate ])
 
-  function loginSubmit() {
-    login().then(() => navigate(-1));
+  function handleLogin() {
+    login().then(() => {
+      navigate(-1);
+      toast.info("Login realizado com sucesso!");
+    }).catch(err => {
+      toast.error(err);
+      throw err;
+    });
   }
 
   return <div className="flex justify-center items-center bg-serenade-50 w-full min-h-screen text-shark-950 font-serif">
@@ -41,7 +48,7 @@ export function Login() {
           />
         </div>
 
-        <button onClick={() => loginSubmit()} className="flex p-4 justify-center text-center self-stretch rounded-lg bg-olive-drab-700 font-bold text-serenade-100">
+        <button onClick={() => handleLogin()} className="flex p-4 justify-center text-center self-stretch rounded-lg bg-olive-drab-700 font-bold text-serenade-100">
           Entrar
         </button>
         <button onClick={() => navigate(-1)} className="flex p-4 justify-center text-center self-stretch rounded-lg bg-opacity-25 bg-silver-chalice-400">
