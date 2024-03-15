@@ -1,6 +1,6 @@
 import { ArrowCircleDown, ArrowCircleUp } from "phosphor-react";
 import { ReactNode } from "react";
-import { VoteType } from "../shared/types/vote";
+import { VoteType } from "../utils/types/vote";
 
 const LikeButtonColorClasses = {
   "upvote": "text-olive-drab-700",

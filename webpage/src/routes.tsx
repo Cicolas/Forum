@@ -1,15 +1,15 @@
 import './index.css'
 import { Route, createBrowserRouter, createRoutesFromElements, redirect } from 'react-router-dom'
 import { RouterProvider } from 'react-router';
-import { Post } from './pages/post/post';
+import { Post } from './views/post/post';
 
 import { Feed } from './components/Feed';
 import { Root } from './components/Root';
-import { Recent } from './pages/feed/recent';
-import { Category } from './pages/feed/category';
-import { Login } from './pages/auth/login';
-import { Register } from './pages/auth/register';
-import { UserFeed } from './pages/user/userFeed';
+import { Recent } from './views/feed/recent';
+import { Category } from './views/feed/category';
+import { Login } from './views/auth/login';
+import { Register } from './views/auth/register';
+import { UserFeed } from './views/user/userFeed';
 
 const redirectLoader = (path: string) => async () => redirect(path);
 

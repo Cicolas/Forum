@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { IPost } from "../shared/interfaces/post";
+import { IPost } from "../utils/interfaces/post";
 import { CategoryChips } from "./CategoryChips";
 import { UserLink } from "./UserLink";
 import { ReactElement } from "react";
