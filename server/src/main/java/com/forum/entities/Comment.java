@@ -1,32 +1,18 @@
 package com.forum.entities;
 
-import java.util.*;
-import com.forum.utils.Time;
+import jakarta.persistence.*;
 
-public class Comment {
-  public String id;
-  public String parentId;
-  public String author;
-  public String content;
-  public Rank rank;
-  public int createdAt;
-  public int lastUpdate;
+@Entity
+@Table(name = "comments")
+public class Comment extends Contribution {
+  @ManyToOne
+  @JoinColumn(name = "parent_id")
+  private Contribution parent;
 
-  public Comment(
-    String parentId,
-    String author,
-    String content
-  ) {
-    UUID uuid = UUID.randomUUID();
-    this.id = uuid.toString();
+  public Comment() {}
 
-    this.parentId = parentId;
-    this.author = author;
-    this.content = content;
+  public Contribution getParent() { return this.parent; }
+  public String getParentId() { return this.parent.getId(); }
 
-    this.rank = new Rank();
-
-    this.createdAt = Time.now();
-    this.lastUpdate = this.createdAt;
-  }
+  public void setParent(Contribution parent) { this.parent = parent; }
 }

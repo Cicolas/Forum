@@ -11,4 +11,9 @@ public class Time {
 
     return (int) timestampInSeconds;
   }
+
+  public static int afterOneHour() {
+    int oneHourInSeconds = 3600;
+    return Time.now() + oneHourInSeconds;
+  }
 }

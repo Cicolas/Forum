@@ -1,20 +1,18 @@
 package com.forum.features.createComment;
 
-import com.forum.http.HttpHandler;
-import com.forum.repositories.CommentsRepository;
-import com.forum.repositories.PostsRepository;
-import com.forum.repositories.UsersRepository;
+import com.forum.http.HttpEndpointHandler;
+import com.forum.repositories.*;
 
 public class CreateComment {
   public CreateComment(
+    ContributionsRepository contributionsRepository,
     CommentsRepository commentsRepository,
-    UsersRepository usersRepository,
-    PostsRepository postsRepository
+    UsersRepository usersRepository
   ) {
     CreateCommentService service = new CreateCommentService(
+      contributionsRepository,
       commentsRepository,
-      usersRepository,
-      postsRepository
+      usersRepository
     );
 
     CreateCommentController controller = new CreateCommentController(service);
@@ -22,5 +20,5 @@ public class CreateComment {
     this.handler = controller;
   }
 
-  public HttpHandler handler;
+  public HttpEndpointHandler handler;
 }

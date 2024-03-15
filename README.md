@@ -2,105 +2,34 @@
 
 ## Overview
 
-...
+The system provides an environment for discussion threads between community members.
 
 ## Requirements
 
-- The forum system manages users, posts and comments.
-- A user contains: id, name, email (unique), password, avatar url and creation timestamp.
-- The user password must be stored encrypted.
-- The system must have user authentication.
-- The system must have access control.
-- Each user on the system must have roles and permissions.
-- The system must support two types of users: common and super users
-- The system must support three main roles: administrators, authors and readers.
-- Each role and permission contains: name (unique), description and creation timestamp.
-- Common users are, at the same time, authors and readers.
-- Super users extend common users by being administrators (admins).
-- A user can have many posts and comments.
-- A post can be created, updated and deleted by one author.
-- A post contains: id, title, content, timestamps (creation, last update) and comments.
-- A post can be linked to multiple categories, improving search.
-- A category contains: name (unique), description and creation timestamp.
-- Categories must have unique names.
-- Categories can only be created, updated and deleted by admins.
-- A comment contains: node id, parent id, user id, content and timestamps (creation, last update).
-- A comment can be linked to a post directly or indirectly by another comment (as a reply).
-- A comment can be created, updated and deleted by one reader.
-- Admins can delete inappropriate posts and comments from users.
-- Deleting a comment does not affect its children.
-- Posts and comments must be visible to any user of the system.
-- Posts and comments can be ranked using and up/down-voting system.
-- In the voting system, a user can only participate once, exclusively voting up or down.
+1. A user must contain: id, name, email, password, image and date of creation
 
-## Diagrams
+   - Id and email must be unique
+   - Password must be encrypted
 
-```mermaid
-  classDiagram
-    direction LR
+2. The system must have authentication
 
-    class User {
-      id: String
-      name: String
-      email: String
-      password: String
-      avatar_url: String
-      created_at: int
-    }
+3. The system must have authorization
 
-    class Role {
-      name: String
-      description: String
-      created_at: int
-    }
+   - Each user in the system must be associated with permissions, which can be grouped into roles
+   - The system must support two types of users: members and administrators
+   - Members can create and rank contributions – posts and comments. In addition to manage your own account
+   - Administrators can create roles, permissions and categories
+   - A role/permission must contain: name (unique), description and date of creation
 
-    class Permission {
-      name: String
-      description: String
-      created_at: int
-    }
+4. The system must store user contributions
 
-    class Post {
-      id: String
-      author: String
-      title: String
-      content: String
-      created_at: int
-      last_update: int
-    }
+   - A contribution must be accessible to any user on the system, even without being authenticated
+   - A post must contain: id, author, title, content, categories, comments and dates (creation, last update)
+   - A category must contain: name (unique), description, color and date of creation
+   - A comment must contain: id, author, content and dates (creation, last update)
+   - A comment can reference another as an answer
 
-    class Category {
-      name: String
-      description: String
-      created_at: int
-    }
+5. Contributions can be ranked by community
 
-    class Comment {
-      id: String
-      parent_id: String
-      author: String
-      content: String
-      created_at: int
-      last_update: int
-    }
-
-    class Rank {
-      up_votes: String[]
-      down_votes: String[]
-    }
-
-    User "*" -- "*" Role
-    Role "*" -- "*" Permission
-    Permission "*" -- "*" User
-
-    Comment "*" --* "1" User
-    Post "*" --* "1" User
-
-    Post "*" -- "*" Category
-
-    Post "1" *-- "*" Comment
-    Comment "*" --o "1" Comment: reply
-
-    Comment "1" -- "1" Rank
-    Post "1" -- "1" Rank
-```
+   - A ranking can be either positive or negative
+   - A user can only participate once

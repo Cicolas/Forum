@@ -1,12 +1,9 @@
 package com.forum.features.createPost;
 
-import com.forum.entities.Post;
-import com.forum.entities.User;
-import com.forum.entities.Category;
-
-import com.forum.repositories.PostsRepository;
-import com.forum.repositories.UsersRepository;
-import com.forum.repositories.CategoriesRepository;
+import java.util.*;
+import com.forum.repositories.*;
+import com.forum.entities.*;
+import com.forum.exceptions.domain.RequestException;
 
 class CreatePostService {
   private PostsRepository postsRepository;
@@ -24,28 +21,21 @@ class CreatePostService {
   }
 
   public Post execute(PostCreationRequest creationRequest) {
-    User author = this.usersRepository.listOne(creationRequest.author);
+    User author = this.usersRepository.listOne(creationRequest.authorId);
 
     if (author == null) {
-      throw new Error("author does not exist");
+      throw new RequestException("author does not exist");
     }
 
-    for (String categoryName : creationRequest.categories) {
-      Category category = this.categoriesRepository.listOne(categoryName);
+    Set<Category> categories = this.categoriesRepository.listMany(creationRequest.categoryNames);
 
-      if (category == null) {
-        throw new Error(String.format("category named '%s' does not exist", categoryName));
-      }
-    }
+    Post post = new Post();
+    post.setAuthor(author);
+    post.setTitle(creationRequest.title);
+    post.setContent(creationRequest.content);
+    post.setCategories(categories);
 
-    Post post = new Post(
-      creationRequest.author,
-      creationRequest.title,
-      creationRequest.content,
-      creationRequest.categories
-    );
-
-    this.postsRepository.create(post);
+    this.postsRepository.save(post);
 
     return post;
   }

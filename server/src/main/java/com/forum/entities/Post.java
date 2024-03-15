@@ -1,35 +1,38 @@
 package com.forum.entities;
 
-import java.util.UUID;
-import com.forum.utils.Time;
+import java.util.*;
+import jakarta.persistence.*;
 
-public class Post {
-  public String id;
-  public String author;
-  public String title;
-  public String content;
-  public String[] categories;
-  public Rank rank;
-  public int createdAt;
-  public int lastUpdate;
+@Entity
+@Table(name = "posts")
+public class Post extends Contribution {
+  private String title;
 
-  public Post(
-    String author,
-    String title,
-    String content,
-    String[] categories
-  ) {
-    UUID uuid = UUID.randomUUID();
-    this.id = uuid.toString();
+  @ManyToMany(fetch = FetchType.EAGER)
+  @JoinTable(
+    name = "post_categories",
+    joinColumns = @JoinColumn(name = "post_id"),
+    inverseJoinColumns = @JoinColumn(name = "category_name")
+  )
+  private Set<Category> categories;
 
-    this.author = author;
+  public Post() {}
+
+  public String getTitle() { return this.title; }
+  public Set<Category> getCategories() { return this.categories; }
+  public Set<String> getCategoryNames() {
+    Set<String> categoryNames = new HashSet<>();
+    this.getCategories().forEach((category) -> categoryNames.add(category.getName()));
+    return categoryNames;
+  }
+
+  public void setTitle(String title) {
+    this.setLastUpdate();
     this.title = title;
-    this.content = content;
+  }
+
+  public void setCategories(Set<Category> categories) {
+    this.setLastUpdate();
     this.categories = categories;
-
-    this.rank = new Rank();
-
-    this.createdAt = Time.now();
-    this.lastUpdate = this.createdAt;
   }
 }

@@ -1,9 +1,7 @@
 package com.forum.features.createPost;
 
-import com.forum.http.HttpHandler;
-import com.forum.repositories.PostsRepository;
-import com.forum.repositories.UsersRepository;
-import com.forum.repositories.CategoriesRepository;
+import com.forum.http.HttpEndpointHandler;
+import com.forum.repositories.*;
 
 public class CreatePost {
   public CreatePost(
@@ -22,5 +20,5 @@ public class CreatePost {
     this.handler = controller;
   }
 
-  public HttpHandler handler;
+  public HttpEndpointHandler handler;
 }

@@ -1,52 +1,43 @@
 package com.forum.features.createComment;
 
-import com.forum.entities.Comment;
-import com.forum.entities.User;
-import com.forum.entities.Post;
-
-import com.forum.repositories.CommentsRepository;
-import com.forum.repositories.UsersRepository;
-import com.forum.repositories.PostsRepository;
+import com.forum.entities.*;
+import com.forum.repositories.*;
+import com.forum.exceptions.domain.RequestException;
 
 class CreateCommentService {
+  private ContributionsRepository contributionsRepository;
   private CommentsRepository commentsRepository;
   private UsersRepository usersRepository;
-  private PostsRepository postsRepository;
 
   public CreateCommentService(
+    ContributionsRepository contributionsRepository,
     CommentsRepository commentsRepository,
-    UsersRepository usersRepository,
-    PostsRepository postsRepository
+    UsersRepository usersRepository
   ) {
+    this.contributionsRepository = contributionsRepository;
     this.commentsRepository = commentsRepository;
     this.usersRepository = usersRepository;
-    this.postsRepository = postsRepository;
   }
 
   public Comment execute(CommentCreationRequest creationRequest) {
-    User author = this.usersRepository.listOne(creationRequest.author);
+    User author = this.usersRepository.listOne(creationRequest.authorId);
 
     if (author == null) {
-      throw new Error("author does not exist");
+      throw new RequestException("author does not exist");
     }
 
-    Comment comment = this.commentsRepository.listOne(creationRequest.parentId);
+    Contribution parent = this.contributionsRepository.listOne(creationRequest.parentId);
 
-    if (comment == null) {
-      Post post = this.postsRepository.listOne(creationRequest.parentId);
-
-      if (post == null) {
-        throw new Error("comment has no parent");
-      }
+    if (parent == null) {
+      throw new RequestException("comment has no parent");
     }
 
-    comment = new Comment(
-      creationRequest.parentId,
-      creationRequest.author,
-      creationRequest.content
-    );
+    Comment comment = new Comment();
+    comment.setAuthor(author);
+    comment.setParent(parent);
+    comment.setContent(creationRequest.content);
 
-    this.commentsRepository.create(comment);
+    this.commentsRepository.save(comment);
 
     return comment;
   }

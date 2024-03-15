@@ -11,8 +11,7 @@ class ListUsersService {
     this.usersRepository = usersRepository;
   }
 
-  public List<UserView> execute() {
-    List<User> users = this.usersRepository.list();
-    return users.stream().map((user) -> new UserView(user)).toList();
+  public  List<User> execute() {
+    return this.usersRepository.list();
   }
 }

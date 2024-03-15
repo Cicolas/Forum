@@ -1,10 +1,11 @@
 package com.forum.features.listPosts;
 
-import java.util.List;
+import java.util.*;
 import com.forum.entities.Post;
+import com.forum.views.CompletePostView;
 import com.forum.http.*;
 
-class ListPostsController implements HttpHandler {
+class ListPostsController implements HttpEndpointHandler {
   private ListPostsService listPostsService;
 
   public ListPostsController(ListPostsService listPostsService) {
@@ -12,7 +13,18 @@ class ListPostsController implements HttpHandler {
   }
 
   public void handle(HttpRequest request, HttpResponse response) {
-    List<Post> posts = this.listPostsService.execute();
-    response.json(posts);
+    PostListingRequest listingRequest = new PostListingRequest();
+
+    listingRequest.title = request.getQueryParam("title");
+    listingRequest.authorName = request.getQueryParam("author");
+    List<String> categoryNames = request.getQueryParams("category");
+
+    listingRequest.categoryNames = new HashSet<>();
+    categoryNames.forEach(listingRequest.categoryNames::add);
+
+    List<Post> posts = this.listPostsService.execute(listingRequest);
+    List<CompletePostView> postViews = posts.stream().map(CompletePostView::new).toList();
+
+    response.json(postViews);
   };
 }

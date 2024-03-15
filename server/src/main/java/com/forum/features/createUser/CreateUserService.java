@@ -1,35 +1,51 @@
 package com.forum.features.createUser;
 
-import com.forum.entities.User;
-import com.forum.repositories.UsersRepository;
-import com.forum.security.HashGenerator;
+import java.util.*;
+import com.forum.entities.*;
+import com.forum.repositories.*;
+import com.forum.exceptions.domain.RequestException;
+import com.forum.security.HashProvider;
 
-class CreateUserService {
-  private HashGenerator hashGenerator;
+public class CreateUserService {
+  private HashProvider hashProvider;
   private UsersRepository usersRepository;
+  private RolesRepository rolesRepository;
+  private PermissionsRepository permissionsRepository;
 
   public CreateUserService(
-    HashGenerator hashGenerator,
-    UsersRepository usersRepository
+    HashProvider hashProvider,
+    UsersRepository usersRepository,
+    RolesRepository rolesRepository,
+    PermissionsRepository permissionsRepository
   ) {
-    this.hashGenerator = hashGenerator;
+    this.hashProvider = hashProvider;
     this.usersRepository = usersRepository;
+    this.rolesRepository = rolesRepository;
+    this.permissionsRepository = permissionsRepository;
   }
 
-  public UserView execute(UserCreationRequest creationRequest) {
-    // TODO: apenas 1 usuário por email
+  public User execute(UserCreationRequest creationRequest) {
+    User registeredUser = this.usersRepository.listOneByEmail(creationRequest.email);
 
-    String passwordHash = this.hashGenerator.generate(creationRequest.password);
+    if (registeredUser != null) {
+      throw new RequestException("email already registered");
+    }
 
-    User user = new User(
-      creationRequest.name,
-      creationRequest.email,
-      passwordHash,
-      creationRequest.avatarUrl
-    );
+    String passwordHash = this.hashProvider.hash(creationRequest.password);
 
-    this.usersRepository.create(user);
+    Set<Role> roles = this.rolesRepository.listMany(creationRequest.roleNames);
+    Set<Permission> addedPermissions = this.permissionsRepository.listMany(creationRequest.addedPermissionNames);
 
-    return new UserView(user);
+    User user = new User();
+    user.setName(creationRequest.name);
+    user.setEmail(creationRequest.email);
+    user.setPassword(passwordHash);
+    user.setAvatarUrl(creationRequest.avatarUrl);
+    user.setRoles(roles);
+    user.addPermissions(addedPermissions);
+
+    this.usersRepository.save(user);
+
+    return user;
   }
 }

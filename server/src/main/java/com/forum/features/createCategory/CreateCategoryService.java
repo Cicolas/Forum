@@ -2,6 +2,7 @@ package com.forum.features.createCategory;
 
 import com.forum.entities.Category;
 import com.forum.repositories.CategoriesRepository;
+import com.forum.exceptions.domain.RequestException;
 
 class CreateCategoryService {
   private CategoriesRepository categoriesRepository;
@@ -14,15 +15,15 @@ class CreateCategoryService {
     Category category = this.categoriesRepository.listOne(creationRequest.name);
 
     if (category != null) {
-      throw new Error("category already exists");
+      throw new RequestException("category already exists");
     }
 
-    category = new Category(
-      creationRequest.name,
-      creationRequest.description
-    );
+    category = new Category();
+    category.setName(creationRequest.name);
+    category.setDescription(creationRequest.description);
+    category.setColor(creationRequest.color);
 
-    this.categoriesRepository.create(category);
+    this.categoriesRepository.save(category);
 
     return category;
   }

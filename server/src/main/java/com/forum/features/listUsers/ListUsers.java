@@ -1,6 +1,6 @@
 package com.forum.features.listUsers;
 
-import com.forum.http.HttpHandler;
+import com.forum.http.HttpEndpointHandler;
 import com.forum.repositories.UsersRepository;
 
 public class ListUsers {
@@ -11,5 +11,5 @@ public class ListUsers {
     this.handler = controller;
   }
 
-  public HttpHandler handler;
+  public HttpEndpointHandler handler;
 }
