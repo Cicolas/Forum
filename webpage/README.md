@@ -45,6 +45,8 @@ With everything downloaded you can finally run the webpage
 $ npm run dev
 ```
 
+The webpage will normally be served on http://localhost:5173/
+
 ## Building
 
 To build the application you can simply run the

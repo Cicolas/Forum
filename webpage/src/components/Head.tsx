@@ -8,9 +8,7 @@ export function Head() {
   const navigate = useNavigate();
 
   function handleLogout() {
-    logout().then(() =>
-      navigate(0)
-    );
+    logout();
   }
 
   return (

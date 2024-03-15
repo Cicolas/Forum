@@ -13,3 +13,14 @@ textarea:focus {
   outline-offset: 2px;
   outline-color: #A6A6A6;
 }
+
+input {
+  outline: none;
+}
+
+input:focus {
+  outline: solid;
+  outline-width: 2px;
+  outline-offset: 2px;
+  outline-color: #A6A6A6;
+}

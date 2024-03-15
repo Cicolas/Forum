@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Box } from "./components/Box";
 import { ArticleNyTimes } from "phosphor-react";
+import { InputField } from "../../components/InputField";
 
 export function Register() {
   const navigate = useNavigate();
@@ -13,40 +14,35 @@ export function Register() {
         </div>
         <h1 className="font-bold leading-normal text-2xl">Registrar</h1>
 
-        <div className="flex flex-col items-start self-stretch gap-2 pb-2">
-          Nome
-          <input
-            type="text"
-            placeholder="Digite seu nome"
-            className="py-2 px-4 content-between items-center self-stretch rounded-lg bg-opacity-25 bg-silver-chalice-400 leading-normal tracking-wider font-roboto text-justify"
-          />
-        </div>
-        <div className="flex flex-col items-start self-stretch gap-2 pb-2">
-          Email
-          <input
-            type="text"
-            placeholder="Digite seu email"
-            className="py-2 px-4 content-between items-center self-stretch rounded-lg bg-opacity-25 bg-silver-chalice-400 leading-normal tracking-wider font-roboto text-justify"
-          />
-        </div>
-        <div className="flex flex-col items-start self-stretch gap-2 pb-2">
-          Senha
-          <input
-            type="password"
-            placeholder="Digite sua senha"
-            className="py-2 px-4 content-between items-center self-stretch rounded-lg bg-opacity-25 bg-silver-chalice-400 leading-normal tracking-wider font-roboto text-justify"
-          />
-        </div>
-        <div className="flex flex-col items-start self-stretch gap-2 pb-12">
-          Foto
-          <input
-            type="text"
-            placeholder="Link para foto"
-            className="py-2 px-4 content-between items-center self-stretch rounded-lg bg-opacity-25 bg-silver-chalice-400 leading-normal tracking-wider font-roboto text-justify"
-          />
-        </div>
+        <InputField
+          title="Nome"
+          type="text"
+          placeholder="Digite seu nome"
+        >
+        </InputField>
 
-        <button className="flex p-4 justify-center text-center self-stretch rounded-lg bg-shark-950 font-bold text-serenade-100">
+        <InputField
+          title="Email"
+          type="email"
+          placeholder="Digite seu email"
+        >
+        </InputField>
+
+        <InputField
+          title="Senha"
+          type="password"
+          placeholder="Digite sua senha"
+        >
+        </InputField>
+
+        <InputField
+          title="Foto"
+          type="url"
+          placeholder="Insira o url da foto"
+        >
+        </InputField>
+
+        <button className="flex mt-12 p-4 justify-center text-center self-stretch rounded-lg bg-shark-950 font-bold text-serenade-100">
           Registrar
         </button>
         <button onClick={()=> navigate(-1)}  className="flex p-4 justify-center text-center self-stretch rounded-lg bg-opacity-25 bg-silver-chalice-400 ">
