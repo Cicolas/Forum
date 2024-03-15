@@ -17,9 +17,9 @@ export function Head() {
         <Link to="/home"><ArticleNyTimes size={32} weight="bold"></ArticleNyTimes></Link>
       </div>
       <div className="absolute hidden md:flex right-1/2 items-center gap-8 italic cursor-pointer tracking-wider translate-x-1/2">
+        <Link to="/home">Home</Link>
         <Link to="/feed/recent">Recentes</Link>
         <Link to="/user">Perfil</Link>
-        <Link to="/about">Sobre</Link>
       </div>
         {authenticated ? (
           <div className="flex flex-row gap-4 items-center">
@@ -29,7 +29,7 @@ export function Head() {
             <button
               data-tooltip-id="tooltip-controller"
               data-tooltip-content="Logout!"
-              onClick={() => handleLogout()}
+              onClick={handleLogout}
               className="group relative flex w-8 h-8 items-center justify-center gap-4 bg-silver-chalice-400 rounded-full overflow-hidden cursor-pointer"
             >
               <img className="filter group-hover:brightness-50" src="https://avatars.githubusercontent.com/u/32042329?v=4" />

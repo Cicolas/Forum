@@ -3,11 +3,15 @@ import { Footer } from "./Footer";
 import { Head } from "./Head";
 import { SearchBar } from "./SearchBar";
 
-export function Root() {
+type RootProps = {
+  searchBar?: boolean;
+}
+
+export function Root({ searchBar }: RootProps) {
   return (
     <div className="flex flex-col items-center bg-serenade-50 min-h-screen min-w-full text-shark-950 font-serif">
       <Head />
-      <SearchBar />
+      {searchBar !== false && <SearchBar />}
       <Outlet />
       <Footer />
     </div>

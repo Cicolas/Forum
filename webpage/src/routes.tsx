@@ -11,12 +11,16 @@ import { Login } from './views/auth/login';
 import { Register } from './views/auth/register';
 import { UserFeed } from './views/user/userFeed';
 import PostService from './services/PostService';
+import { Home } from './views/home/home';
 
 const redirectLoader = (path: string) => async () => redirect(path);
 
 const router = createBrowserRouter(
   createRoutesFromElements(<>
     <Route path="/" loader={redirectLoader("/home")}></Route>
+    <Route element={<Root searchBar={false}/>}>
+      <Route path="home" element={<Home/>}></Route>
+    </Route>
     <Route element={<Root />}>
       <Route path="feed" loader={redirectLoader("recent")}></Route>
       <Route path="feed" element={<Feed />}>

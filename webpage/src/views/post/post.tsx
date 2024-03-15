@@ -45,7 +45,7 @@ export function Post() {
     ta.style.height = `${ta.scrollHeight}px`;
   }
 
-  return <Container>
+  return <Container className="py-4">
     <div className="flex flex-row justify-between items-center self-stretch">
       <div className="flex flex-col items-start gap-1">
         <div className="flex flex-row gap-2 items-center">
