@@ -1,18 +1,18 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 const LikeService = {
-  likePost: (postId: string) => {
+  likePost: async (postId: string) => {
     return true;
   },
 
-  dislikePost: (postId: string) => {
+  dislikePost: async (postId: string) => {
     return true;
   },
 
-  likeComment: (commentId: string) => {
+  likeComment: async (commentId: string) => {
     return true;
   },
 
-  dislikeComment: (commentId: string) => {
+  dislikeComment: async (commentId: string) => {
     return true;
   },
 }

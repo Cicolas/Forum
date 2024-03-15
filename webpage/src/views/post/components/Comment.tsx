@@ -4,8 +4,8 @@ import { UserLink } from "../../../components/UserLink";
 import { useState } from "react";
 import { VoteType } from "../../../utils/types/vote";
 import { IComment } from "../../../utils/interfaces/comment";
-import { dislikeComment, likeComment } from "../../../services/LikeService";
 import { countRank } from "../../../utils/countRank";
+import LikeService from "../../../services/LikeService";
 
 type CommentProps = {
   value: IComment;
@@ -17,7 +17,7 @@ export function Comment({
   const [ likeState, setLikeState ] = useState<VoteType>("undefined");
 
   const handleVote = (vote: VoteType) => {
-    const action = vote === "upvote" ? likeComment : dislikeComment;
+    const action = vote === "upvote" ? LikeService.likeComment : LikeService.dislikeComment;
 
     action(value.id).then(() => {
       if (likeState === vote)

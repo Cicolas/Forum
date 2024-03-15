@@ -1,10 +1,9 @@
-import { useParams } from "react-router-dom";
+import { useLoaderData } from "react-router-dom";
 import { Container } from "../../components/Container";
 import dayjs from "dayjs";
 import { PostListing } from "../../components/PostListing";
-import { useEffect, useState } from "react";
 import { IPost } from "../../utils/interfaces/post";
-import { getAllPostByUser } from "../../services/PostService";
+// import { getAllPostByUser } from "../../services/PostService";
 
 const DATA = new Date();
 
@@ -22,16 +21,7 @@ function UserDetails() {
 }
 
 export function UserFeed() {
-  const { userId } = useParams();
-  const [ posts, setPosts ] = useState<IPost[] | undefined>(undefined);
-
-  useEffect(() => {
-    if (!userId) throw new Error("Invalid User");
-
-    getAllPostByUser(userId)
-      .then(setPosts)
-      .catch(err => {throw new Error(err)})
-  }, [userId, setPosts]);
+  const posts = useLoaderData() as IPost[];
 
   return <Container>
     <UserDetails></UserDetails>

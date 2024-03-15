@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { IPost } from "../utils/interfaces/post"
 
 const posts: IPost[] = [
@@ -13,21 +14,29 @@ const posts: IPost[] = [
 ]
 
 const PostService = {
-  getPostById: (id: string) => {
+  getPostById: async (id: string) => {
     // TODO: Adicionar MOCK_API env
-    return posts.find(p => p.id === id);
+    return new Promise(resolve => {
+      resolve(posts.find(p => p.id === id));
+    })
   },
 
-  getAllPost: () => {
-    return posts;
+  getAllPost: async () => {
+    return new Promise((resolve, reject) => {
+      resolve(posts);
+    });
   },
 
   getAllPostByCategory: async (name: string) => {
-    return await PostService.getAllPost();
+    return new Promise((resolve, reject) => {
+      resolve(posts);
+    });
   },
 
   getAllPostByUser: async (userId: string) => {
-    return await PostService.getAllPost();
+    return new Promise((resolve, reject) => {
+      resolve(posts);
+    });
   },
 }
 

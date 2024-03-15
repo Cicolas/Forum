@@ -1,30 +1,19 @@
-import { useState, useEffect } from "react";
-import { getAllPostByCategory } from "../../services/PostService";
 import { PostListing } from "../../components/PostListing";
-import { useQuery } from "../../hooks/useQuery";
-import { IPost } from "../../utils/interfaces/post";
-import { CategoryChips } from "../../components/CategoryChips";
 import { Container } from "../../components/Container";
+import { IPost } from "../../utils/interfaces/post";
+import { useLoaderData, useParams } from "react-router-dom";
+import { CategoryChips } from "../../components/CategoryChips";
 
 export function Category() {
-  const queryParams = useQuery();
-  const [ posts, setPosts ] = useState<IPost[] | undefined>(undefined);
+  const { categoryName } = useParams();
 
-  useEffect(() => {
-    const categoryName = queryParams.get("name");
-
-    if (!categoryName) return;
-
-    getAllPostByCategory(categoryName)
-      .then(setPosts)
-      .catch(err => {throw new Error(err)})
-  }, [queryParams, setPosts]);
+  const posts = useLoaderData() as IPost[];
 
   return (<Container>
       <PostListing
         title="Últimos posts"
         posts={posts??[]}
-        where={<CategoryChips name={queryParams.get("name")??""} color="#6d8c003f" />}
+        where={<CategoryChips name={categoryName??""} color="#6d8c003f" />}
       >
       </PostListing>
   </Container>)

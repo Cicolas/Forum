@@ -1,17 +1,16 @@
 import { KeyReturn } from "phosphor-react";
 import { Container } from "../../components/Container";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
 import { LikeButton } from "../../components/LikeButton";
 import { CategoryChips } from "../../components/CategoryChips";
 import { UserLink } from "../../components/UserLink";
 import { Comment } from "./components/Comment";
-import { useParams } from "react-router-dom";
-import { getPostById } from "../../services/PostService";
+import { useLoaderData } from "react-router-dom";
 import { IPost } from "../../utils/interfaces/post";
 import dayjs from "dayjs";
-import { dislikePost, likePost } from "../../services/LikeService";
 import { VoteType } from "../../utils/types/vote";
 import { IComment } from "../../utils/interfaces/comment";
+import LikeService from "../../services/LikeService";
 
 const comment: IComment = {
   id: "12345",
@@ -24,15 +23,13 @@ const comment: IComment = {
 }
 
 export function Post() {
-  const { postId } = useParams();
-
-  const [ post, setPost ] = useState<IPost | undefined>(undefined);
+  const post = useLoaderData() as IPost;
   const [ likeState, setLikeState ] = useState<VoteType>("undefined");
 
   const handleVote = (vote: VoteType) => {
     if (!post) return;
 
-    const action = vote === "upvote" ? likePost : dislikePost;
+    const action = vote === "upvote" ? LikeService.likePost : LikeService.dislikePost;
 
     action(post?.id).then(() => {
       if (likeState === vote)
@@ -47,14 +44,6 @@ export function Post() {
     ta.style.height = "0";
     ta.style.height = `${ta.scrollHeight}px`;
   }
-
-  useEffect(() => {
-    if (!postId) throw new Error("'postId' invalido");
-
-    getPostById(postId)
-      .then(setPost)
-      .catch(err => {throw new Error(err)});
-  }, [postId, setPost]);
 
   return <Container>
     <div className="flex flex-row justify-between items-center self-stretch">

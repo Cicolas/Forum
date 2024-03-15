@@ -1,17 +1,10 @@
-import { useEffect, useState } from "react";
-import { getAllPost } from "../../services/PostService";
 import { PostListing } from "../../components/PostListing";
 import { IPost } from "../../utils/interfaces/post";
 import { Container } from "../../components/Container";
+import { useLoaderData } from "react-router-dom";
 
 export function Recent() {
-  const [ posts, setPosts ] = useState<IPost[] | undefined>(undefined);
-
-  useEffect(() => {
-    getAllPost()
-      .then(setPosts)
-      .catch(err => {throw new Error(err)})
-  }, [setPosts]);
+  const posts = useLoaderData() as IPost[];
 
   return (<Container>
     <PostListing
