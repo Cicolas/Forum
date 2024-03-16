@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Container } from "./components/Container";
-import { Footer } from "./components/Footer";
-import { Head } from "./components/Head";
+import { Footer } from "./components/Page/Footer";
+import { Head } from "./components/Page/Head";
 
 export default function Error404() {
   return <div className="flex flex-col items-center bg-serenade-50 min-h-screen min-w-full text-shark-950 font-serif">

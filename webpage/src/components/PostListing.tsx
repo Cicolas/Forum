@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { IPost } from "../utils/interfaces/post";
-import { CategoryChips } from "./CategoryChips";
+import { CategoryChip } from "./Chips/CategoryChips";
 import { UserLink } from "./UserLink";
 import { ReactElement } from "react";
 import { PlusCircle } from "phosphor-react";
@@ -13,18 +13,18 @@ type FeedProps = {
 };
 
 function PostListItem(post: IPost) {
-  return <div className="flex flex-col py-2 items-start gap-1 self-stretch border-b-2 border-solid border-silver-chalice-400 border-opacity-25">
+  return <div key={post.id} className="flex flex-col py-2 items-start gap-1 self-stretch border-b-2 border-solid border-silver-chalice-400 border-opacity-25">
     <div className="flex items-center gap-2">
       <Link to={`/post/${post.id}`} className="text-2xl font-normal leading-normal cursor-pointer">{post.title}</Link>
 
-      <CategoryChips
+      <CategoryChip
         name="Brasil"
         color="#6d8c003f"
-      ></CategoryChips>
-      <CategoryChips
+      ></CategoryChip>
+      <CategoryChip
         name="Humor"
         color="#c23c0c3f"
-      ></CategoryChips>
+      ></CategoryChip>
     </div>
     <div className="flex items-start gap-2 text-silver-chalice-400 font-normal">
       <UserLink id={post.author}>Nícolas Carvalho</UserLink>

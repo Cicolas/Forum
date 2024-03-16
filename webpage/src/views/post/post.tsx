@@ -2,7 +2,7 @@ import { KeyReturn } from "phosphor-react";
 import { Container } from "../../components/Container";
 import { FormEvent, useState } from "react";
 import { LikeButton } from "../../components/LikeButton";
-import { CategoryChips } from "../../components/CategoryChips";
+import { CategoryChip } from "../../components/Chips/CategoryChips";
 import { UserLink } from "../../components/UserLink";
 import { Comment } from "./components/Comment";
 import { useLoaderData } from "react-router-dom";
@@ -39,12 +39,6 @@ export function Post() {
     });
   }
 
-  function autoResizeTextArea(ev: FormEvent) {
-    const ta = ev.target as HTMLTextAreaElement;
-    ta.style.height = "0";
-    ta.style.height = `${ta.scrollHeight}px`;
-  }
-
   return <Container className="py-4">
     <div className="flex flex-row justify-between items-center self-stretch">
       <div className="flex flex-col items-start gap-1">
@@ -52,14 +46,14 @@ export function Post() {
           <UserLink id="cicolas">{post?.author}</UserLink>
           <span className="font-light">em</span>
 
-          <CategoryChips
+          <CategoryChip
             name="Brasil"
             color="#6d8c003f"
-          ></CategoryChips>
-          <CategoryChips
+          ></CategoryChip>
+          <CategoryChip
             name="Humor"
             color="#c23c0c3f"
-          ></CategoryChips>
+          ></CategoryChip>
         </div>
         <h1 className="font-bold text-3.5xl leading-tight">{post?.title}</h1>
       </div>
