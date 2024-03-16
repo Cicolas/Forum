@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Box } from "./components/Box";
 import { ArticleNyTimes } from "phosphor-react";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { toast } from "react-toastify";
 import { InputField } from "../../components/InputField";
@@ -10,9 +10,7 @@ export function Login() {
   const navigate = useNavigate();
   const { authenticated, login } = useContext(AuthContext);
 
-  useEffect(() => {
-    if (authenticated) navigate(-1);
-  }, [authenticated, navigate])
+  if (authenticated) navigate(-1);
 
   async function handleLogin() {
     try {
@@ -25,8 +23,6 @@ export function Login() {
         throw err;
       }
     }
-
-    navigate(-1);
   }
 
   return <div className="flex justify-center items-center bg-serenade-50 w-full min-h-screen text-shark-950 font-serif">

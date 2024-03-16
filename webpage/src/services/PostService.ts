@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { api } from "../lib/axios";
 import { IPost } from "../utils/interfaces/post"
 
 const posts: IPost[] = [
@@ -16,14 +17,18 @@ const posts: IPost[] = [
 const PostService = {
   getPostById: async (id: string) => {
     // TODO: Adicionar MOCK_API env
-    return new Promise(resolve => {
-      resolve(posts.find(p => p.id === id));
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(posts.find(p => p.id === id));
+      }, 1000)
     })
   },
 
   getAllPost: async () => {
     return new Promise((resolve, reject) => {
-      resolve(posts);
+      setTimeout(() => {
+        resolve(posts);
+      }, 1000)
     });
   },
 

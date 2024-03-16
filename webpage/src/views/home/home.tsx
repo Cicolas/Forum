@@ -9,7 +9,7 @@ export function Home() {
 
   function handleLoginButton() {
     if (authenticated) navigate("/feed");
-    else navigate("/login")
+    else navigate("/login");
   }
 
   return <Container className="py-1">
@@ -22,7 +22,9 @@ export function Home() {
         >
           Entrar
         </button>
-        <Link to="/feed" className="text-orient-800 font-light italic">Entrar sem logar &gt;</Link>
+        {!authenticated &&
+          <Link to="/feed" className="text-orient-800 font-light italic">Entrar sem logar &gt;</Link>
+        }
       </div>
     </div>
     <div className="font-roboto text-justify leading-6 tracking-wider mx-auto max-w-[50rem]">

@@ -12,12 +12,13 @@ import { Register } from './views/auth/register';
 import { UserFeed } from './views/user/userFeed';
 import PostService from './services/PostService';
 import { Home } from './views/home/home';
+import Error404 from './404';
 
 const redirectLoader = (path: string) => async () => redirect(path);
 
 const router = createBrowserRouter(
   createRoutesFromElements(<>
-    <Route path="/" loader={redirectLoader("/home")}></Route>
+    <Route path="/" loader={redirectLoader("/home")} errorElement={<Error404/>}></Route>
     <Route element={<Root searchBar={false}/>}>
       <Route path="home" element={<Home/>}></Route>
     </Route>
