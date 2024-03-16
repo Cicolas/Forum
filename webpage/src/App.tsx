@@ -7,23 +7,26 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { Tooltip } from 'react-tooltip'
+import { LoadingProvider } from './context/LoadingContext';
 
 export function App() {
   return <AuthProvider>
-    <Routes />
-    <ToastContainer
-      position="bottom-center"
-      autoClose={3000}
-      hideProgressBar
-      newestOnTop
-      closeOnClick
-      rtl={false}
-      pauseOnFocusLoss
-      draggable
-      pauseOnHover
-      theme="dark"
-    />
-    <Tooltip id="tooltip-controller" />
+    <LoadingProvider>
+      <Routes />
+      <ToastContainer
+        position="bottom-center"
+        autoClose={3000}
+        hideProgressBar
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+        />
+      <Tooltip id="tooltip-controller" />
+    </LoadingProvider>
   </AuthProvider>
 }
 
