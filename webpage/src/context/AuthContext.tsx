@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import IUser from "../utils/interfaces/user";
 import Cookie from "js-cookie";
-import AuthService from "../services/AuthServicce";
+import AuthService from "../services/AuthService";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { api } from "../lib/axios";

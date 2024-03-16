@@ -1,4 +1,4 @@
-import { ArticleNyTimes, SignIn, SignOut } from "phosphor-react";
+import { SignIn, SignOut } from "phosphor-react";
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
@@ -14,7 +14,7 @@ export function Head() {
   return (
     <div className="flex h-16 py-4 justify-between items-center self-stretch mx-auto px-4 w-full md:px-0 md:w-4/5">
       <div className="flex w-8 h-[26px] items-center gap-4">
-        <Link to="/home"><ArticleNyTimes size={32} weight="bold"></ArticleNyTimes></Link>
+        <Link to="/home"><img src="logo.png" className="w-32 rounded-t-sm"></img></Link>
       </div>
       <div className="absolute hidden md:flex right-1/2 items-center gap-8 italic cursor-pointer tracking-wider translate-x-1/2">
         <Link to="/home">Home</Link>
