@@ -1,5 +1,6 @@
 package com.forum.features.authenticateUser;
 
+import com.forum.entities.User;
 import com.forum.http.*;
 import com.google.gson.Gson;
 
@@ -14,9 +15,8 @@ class AuthenticateUserController implements HttpEndpointHandler {
   public void handle(HttpRequest request, HttpResponse response) {
     UserAuthenticationRequest authRequest = this.jsonConverter.fromJson(request.getBody(), UserAuthenticationRequest.class);
 
-    String token = this.service.execute(authRequest);
-    TokenView tokenView = new TokenView(token);
+    AuthResponse auth = this.service.execute(authRequest);
 
-    response.json(tokenView);
+    response.json(auth);
   }
 }

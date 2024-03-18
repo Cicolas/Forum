@@ -21,7 +21,7 @@ class AuthenticateUserService {
     this.jwtProvider = jwtProvider;
   }
 
-  public String execute(UserAuthenticationRequest authRequest) {
+  public AuthResponse execute(UserAuthenticationRequest authRequest) {
     User user = this.usersRepository.listOneByEmail(authRequest.email);
 
     if (user == null) {
@@ -35,8 +35,9 @@ class AuthenticateUserService {
     }
 
     String token = this.jwtProvider.generate(user);
-
-    return token;
+    AuthResponse auth = new AuthResponse(token, user);
+    
+    return auth;
   }
 
   private void throwUserOrPasswordInvalid() {
