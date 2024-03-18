@@ -1,9 +1,16 @@
 import { Trash } from "phosphor-react";
-import { InputField } from "../../../../components/InputField";
-import { Chip } from "../../../../components/Chips/CategoryChips";
-import { Container } from "../../../../components/Container";
+import { FormField } from "../../../../components/molecules/FormField/FormField";
+import { Chip } from "../../../../components/atoms/Chips/Chip";
+import { Container } from "../../../../components/atoms/Container/Container";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { Button } from "../../../../components/atoms/Button/Button";
+import Input from "../../../../components/atoms/Input/Input";
+import { Label } from "../../../../components/atoms/Label/Label";
+import { Split } from "../../../../components/molecules/Split/Split";
+import { TextArea } from "../../../../components/atoms/TextArea/TextArea";
+import { Content } from "../../../../components/atoms/Content/Content";
+import { CategoryPreview } from "./CategoryPreview";
 
 type CategoryFormProps = {
   defaultName?: string;
@@ -23,6 +30,7 @@ const colors = [
   "%picker%"
 ]
 
+// TODO: Extract to a separate file
 function ColorBox(color: string) {
   if (color === "%picker%") {
     return <button
@@ -63,71 +71,68 @@ export function CategoryForm({defaultName, defaultDescription, defaultColor, isC
     onDiscard();
   }
 
-  return <Container alignment="flex-row" className="content-center gap-4 w-full">
-    <div className="flex pr-4 flex-col items-center gap-4 w-full">
-      <div className="flex flex-row items-center justify-between w-full">
-        <h1 className="text-2xl font-bold leading-normal text-ellipsis max-w-full">
-          {isCreate ? "Adicionar" : "Editar"} Categoria: {name}
-        </h1>
-        {!isCreate &&
-          <button onClick={onDelete}>
-            <Trash size={24} className="text-silver-chalice-400 hover:text-serenade-700"></Trash>
-          </button>
-        }
-      </div>
+  return <Split
+    left={
+      <div className="flex pr-4 flex-col items-center gap-4 w-full">
+        <div className="flex flex-row items-center justify-between w-full">
+          <h1 className="text-2xl font-bold leading-normal text-ellipsis max-w-full">
+            {isCreate ? "Adicionar" : "Editar"} Categoria: {name}
+          </h1>
+          {!isCreate &&
+            <button onClick={onDelete}>
+              <Trash size={24} className="text-silver-chalice-400 hover:text-serenade-700"></Trash>
+            </button>
+          }
+        </div>
 
-      <InputField
-        title="Nome"
-        type="text"
-        placeholder="Digite o nome da categoria"
-        value={name??""}
-        className="font-bold"
-        onChange={(ev) => {setName(ev.target.value)}}
-      ></InputField>
+        <FormField>
+          <Label bold>Nome</Label>
+          <Input
+            type="text"
+            value={name??""}
+            onChange={ev => setName(ev.target.value)}
+            placeholder="Insira o nome da cartegoria"
+          >
+          </Input>
+        </FormField>
 
-      <InputField
-        title="Descrição"
-        type="textarea"
-        value={description??""}
-        placeholder="Digite a descrição da categoria"
-        className="font-bold max-h-full"
-        onChange={(ev) => {setDescription(ev.target.value)}}
-      ></InputField>
+        <FormField>
+          <Label bold>Descrição</Label>
+          <TextArea
+            value={description??""}
+            onChange={ev => setDescription(ev.target.value)}
+            placeholder="Insira a descrição da categoria"
+            minHeight="7rem"
+          >
+          </TextArea>
+        </FormField>
 
-      <div className="flex flex-col items-start self-stretch gap-2 pb-2 font-bold">
-        Cor
-        <div className="h-8 justify-start items-start gap-2 flex">
-          {colors.map(ColorBox)}
+        <FormField>
+          <Label bold>Cor</Label>
+          <div className="h-8 justify-start items-start gap-2 flex">
+            {colors.map(ColorBox)}
+          </div>
+        </FormField>
+
+        <div className="self-end pt-4 gap-2 inline-flex">
+          <Button
+            text={isCreate ? "Descartar" : "Cancelar"}
+            action="cancel"
+            className="py-2 px-4"
+          >
+          </Button>
+          <Button
+            text="Salvar"
+            action="submit"
+            className="py-2 px-4"
+          >
+          </Button>
         </div>
       </div>
-
-      <div className="flex pt-4 justify-end items-end gap-2 self-stretch">
-        <button
-          onClick={handleDiscard}
-          className="flex py-2 px-4 items-center rounded-lg bg-opacity-25 bg-silver-chalice-400"
-        >
-          {isCreate ? "Descartar" : "Cancelar"}
-        </button>
-        <button
-          onClick={handleSave}
-          className="flex py-2 px-4 items-center rounded-lg bg-olive-drab-700 font-bold text-serenade-100"
-        >
-          Salvar
-        </button>
-      </div>
-    </div>
-
-    <div className="flex flex-col items-start gap-3 w-full self-stretch">
-      <div className="flex py-24 flex-col justify-center items-center gap-3 self-stretch">
-        <Chip name={name ? name : "Texto"} color={color} className="scale-150"></Chip>
-      </div>
-      <div className="flex items-center gap-2">
-        <h1 className="text-2xl font-normal leading-normal">Título</h1>
-        <Chip name={name ? name : "Texto"} color={color}></Chip>
-      </div>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime, praesentium sint nihil iste recusandae qui facere odio tempore repudiandae, odit modi inventore tenetur quibusdam architecto saepe suscipit culpa! Quae, fugit?
-      </p>
-    </div>
-  </Container>
+    }
+    right={
+      <CategoryPreview name={name} color={color} description={description}>
+      </CategoryPreview>
+    }
+  ></Split>
 }

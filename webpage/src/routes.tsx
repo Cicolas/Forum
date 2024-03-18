@@ -1,30 +1,30 @@
 import './index.css'
 import { Route, createBrowserRouter, createRoutesFromElements, redirect } from 'react-router-dom'
 import { RouterProvider } from 'react-router';
-import { Post } from './views/post/post';
+import { PostPage } from './views/post/PostPage';
 
-import { CategoryContainer } from './components/CategoryContainer';
-import { Root } from './components/Page/Root';
-import { Recent } from './views/feed/recent';
-import { Category } from './views/feed/category';
-import { Login } from './views/auth/login';
-import { Register } from './views/auth/register';
-import { UserFeed } from './views/user/userFeed';
+import { CategoryContainer } from './components/organisms/CategoryContainer/CategoryContainer';
+import { Root } from './components/organisms/Root/Root';
+import { RecentFeedPage } from './views/feed/RecentFeedPage';
+import { CategoryFeedPage } from './views/feed/CategoryFeedPage';
+import { LoginPage } from './views/auth/LoginPage';
+import { RegisterPage } from './views/auth/RegisterPage';
+import { UserPage } from './views/user/UserPage';
 import PostService from './services/PostService';
-import { Home } from './views/home/home';
-import Error404 from './404';
-import { CategoryAdmin } from './views/admin/category/categoryAdmin';
+import { HomePage } from './views/home/HomePage';
+import _404Page from './views/_404Page';
+import { AdminCategoryPage } from './views/admin/category/AdminCategoryPage';
 
 const redirectLoader = (path: string) => async () => redirect(path);
 
 const router = createBrowserRouter(
   createRoutesFromElements(<>
-    <Route path="/" loader={redirectLoader("/home")} errorElement={<Error404/>}></Route>
+    <Route path="/" loader={redirectLoader("/home")} errorElement={<_404Page/>}></Route>
     <Route element={<Root searchBar={false}/>}>
-      <Route path="home" element={<Home/>}></Route>
+      <Route path="home" element={<HomePage/>}></Route>
       <Route path="admin">
         <Route element={<CategoryContainer isAdmin />}>
-          <Route path="category" element={<CategoryAdmin/>}></Route>
+          <Route path="category" element={<AdminCategoryPage/>}></Route>
         </Route>
       </Route>
     </Route>
@@ -33,12 +33,12 @@ const router = createBrowserRouter(
       <Route path="feed" element={<CategoryContainer />}>
         <Route
           path="recent"
-          element={<Recent />}
+          element={<RecentFeedPage />}
           loader={PostService.getAllPost}
         ></Route>
         <Route
           path="category/:categoryName"
-          element={<Category />}
+          element={<CategoryFeedPage />}
           loader={({ params }) =>
             PostService.getAllPostByCategory(params.categoryName as string)
           }
@@ -46,21 +46,21 @@ const router = createBrowserRouter(
       </Route>
       <Route
         path="post/:postId"
-        element={<Post />}
+        element={<PostPage />}
         loader={({ params }) =>
           PostService.getPostById(params.postId as string)
         }
       ></Route>
       <Route
         path="user/:userId"
-        element={<UserFeed />}
+        element={<UserPage />}
         loader={({ params }) =>
           PostService.getAllPostByUser(params.userId as string)
         }
       ></Route>
     </Route>
-    <Route path="/login" element={<Login />}></Route>
-    <Route path="/register" element={<Register />}></Route>
+    <Route path="/login" element={<LoginPage />}></Route>
+    <Route path="/register" element={<RegisterPage />}></Route>
   </>)
 );
 
