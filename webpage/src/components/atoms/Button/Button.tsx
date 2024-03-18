@@ -2,6 +2,7 @@ import { MouseEventHandler } from "react"
 
 type ButtonProps = {
   text: string;
+  disabled?: boolean;
   onClick?: MouseEventHandler<HTMLButtonElement>
   className?: string;
 
@@ -14,9 +15,11 @@ const styleAction = {
   "cancel": "bg-silver-chalice-400 bg-opacity-25 text-shark-950"
 }
 
-export function Button({ text, onClick, className, action }: ButtonProps) {
+export function Button({ text, disabled, onClick, className, action }: ButtonProps) {
   return <button onClick={onClick} className={`
-    flex rounded-lg ${styleAction[action]} items-center ${className} justify-center
+    flex rounded-lg ${styleAction[action]} items-center justify-center
+    ${disabled ? "cursor-wait bg-shark-950 bg-opacity-25" : ""}
+    ${className}
   `}>
     {text}
   </button>

@@ -3,7 +3,7 @@ import { Route, createBrowserRouter, createRoutesFromElements, redirect } from '
 import { RouterProvider } from 'react-router';
 import { PostPage } from './views/post/PostPage';
 
-import { CategoryContainer } from './components/organisms/CategoryContainer/CategoryContainer';
+import { CategoryLayout } from './components/organisms/CategoryLayout/CategoryLayout';
 import { Root } from './components/organisms/Root/Root';
 import { RecentFeedPage } from './views/feed/RecentFeedPage';
 import { CategoryFeedPage } from './views/feed/CategoryFeedPage';
@@ -23,14 +23,14 @@ const router = createBrowserRouter(
     <Route element={<Root searchBar={false}/>}>
       <Route path="home" element={<HomePage/>}></Route>
       <Route path="admin">
-        <Route element={<CategoryContainer isAdmin />}>
+        <Route element={<CategoryLayout isAdmin />}>
           <Route path="category" element={<AdminCategoryPage/>}></Route>
         </Route>
       </Route>
     </Route>
     <Route element={<Root />}>
       <Route path="feed" loader={redirectLoader("recent")}></Route>
-      <Route path="feed" element={<CategoryContainer />}>
+      <Route path="feed" element={<CategoryLayout />}>
         <Route
           path="recent"
           element={<RecentFeedPage />}

@@ -9,11 +9,11 @@ import { AdminCategoryChip } from "../../molecules/Chips/AdminCategoryChip";
 import { CategoryChip } from "../../molecules/Chips/CategoryChip";
 // import { CategoryChips } from "./Chips/CategoryChips";
 
-type CategoryContainerProps = {
+type CategoryLayoutProps = {
   isAdmin?: boolean;
 }
 
-export function CategoryContainer({ isAdmin }: CategoryContainerProps) {
+export function CategoryLayout({ isAdmin }: CategoryLayoutProps) {
   const [categories, setCategories] = useState<ICategory[]>();
 
   useEffect(() => {
@@ -23,6 +23,7 @@ export function CategoryContainer({ isAdmin }: CategoryContainerProps) {
   async function fetchCategories() {
     try {
       const response = await CategoryService.getCategories();
+      console.log(response);
 
       setCategories(response);
     } catch(err) {
@@ -39,7 +40,7 @@ export function CategoryContainer({ isAdmin }: CategoryContainerProps) {
         </Link>
       </div>
       <div className="flex flex-wrap items-start content-start gap-3 self-stretch">
-        {isAdmin? categories?.map(AdminCategoryChip):categories?.map(CategoryChip)}
+        {categories?.map(isAdmin ? AdminCategoryChip : CategoryChip)}
         <AddCategoryChip></AddCategoryChip>
       </div>
     </section>

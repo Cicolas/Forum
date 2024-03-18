@@ -18,4 +18,5 @@ export const sizes = {
 export const colors = {
   "black": "text-shark-950",
   "light-gray": "text-silver-chalice-400",
+  "red": "text-serenade-700"
 } as const;

@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { sizes, colors } from "../../../utils/defaultStyles";
 
 type LabelProps = {
@@ -9,7 +10,7 @@ type LabelProps = {
   size?: keyof typeof sizes;
   color?: keyof typeof colors;
 
-  children: string;
+  children: ReactNode;
 }
 
 export function Label({ children, bold, light, italic, pointer, size, color, className }: LabelProps) {

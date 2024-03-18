@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import IUser from "../utils/interfaces/user";
 import Cookie from "js-cookie";
-import AuthService from "../services/AuthService";
+import AuthService, { UserRegisterRequest } from "../services/AuthService";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { api } from "../lib/axios";
@@ -10,7 +10,8 @@ export interface IAuthContext {
   authenticated: boolean;
   user?: IUser;
 
-  login: () => Promise<void>;
+  login: (username: string, password: string) => Promise<void>;
+  register: (user: UserRegisterRequest) => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -48,6 +49,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
+  async function register(user: UserRegisterRequest) {
+    try {
+      const response = await AuthService.register(user);
+      console.log(response);
+    } catch (err) {
+      toast.error("Erro ao registrar!");
+    }
+  }
+
   async function logout() {
     Cookie.remove("token");
 
@@ -55,7 +65,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(undefined)
   }
 
-  return <AuthContext.Provider value={{authenticated, user, login, logout}}>
+  return <AuthContext.Provider value={{authenticated, user, login, register, logout}}>
     { children }
   </AuthContext.Provider>
 }
