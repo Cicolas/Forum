@@ -34,12 +34,14 @@ const colors = [
 function ColorBox(color: string) {
   if (color === "%picker%") {
     return <button
+      key={color}
       className="w-8 h-8 bg-opacity-25 rounded-lg border-2 border-silver-chalice-400 border-opacity-25 border-neutral-400 cursor-pointer bg-clip-padding"
       style={{backgroundImage: "url(\"/rainbow.jpg\")"}}
     ></button>
   }
 
   return <button
+    key={color}
     className="w-8 h-8 bg-opacity-25 rounded-lg border-2 border-silver-chalice-400 border-opacity-25 border-neutral-400 cursor-pointer"
     style={{backgroundColor: color}}
   ></button>

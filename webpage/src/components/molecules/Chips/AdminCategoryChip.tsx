@@ -9,6 +9,7 @@ type AdminCategoryChipProps = {
 
 export function AdminCategoryChip({name, color}: AdminCategoryChipProps) {
   return <Link
+    key={name}
     to={`/admin/category?categoryName=${name}`}
   >
     <Chip name={name} color={color}></Chip>

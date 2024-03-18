@@ -23,20 +23,26 @@ const CategoryService = {
     });
   },
 
-  createCategory: async (category: CreateCategoryRequest) => {
+  createCategory: async (category: CreateCategoryRequest): Promise<ICategory> => {
     return new Promise((resolve) => {
-      resolve(categories.push({...category, "createdAt": new Date()}))
+      const newCategory = {...category, "createdAt": new Date()};
+      categories.push(newCategory)
+      console.log(categories);
+
+      resolve(newCategory)
     });
   },
 
-  updateCategory: async (category: UpdateCategoryRequest) => {
+  updateCategory: async (category: UpdateCategoryRequest): Promise<ICategory> => {
     return new Promise((resolve) => {
-      resolve(categories.map(value => {
+      categories = categories.map(value => {
         if (value.name === category.name)
-          return category;
+          return {...category, "createdAt": value.createdAt};
         else
           return value;
-      }))
+      })
+
+      resolve(categories.filter(value => value.name === category.name)[0])
     });
   },
 

@@ -1,12 +1,11 @@
 import { Link, Outlet } from "react-router-dom";
 import { Container } from "../../atoms/Container/Container";
-import { useEffect, useState } from "react";
-import { ICategory } from "../../../utils/interfaces/category";
-import CategoryService from "../../../services/CategoryService";
+import { useContext, useEffect } from "react";
 import { Gear } from "phosphor-react";
 import { AddCategoryChip } from "../../molecules/Chips/AddCategoryChip";
 import { AdminCategoryChip } from "../../molecules/Chips/AdminCategoryChip";
 import { CategoryChip } from "../../molecules/Chips/CategoryChip";
+import { CategoryContext } from "../../../context/CategoryContext";
 // import { CategoryChips } from "./Chips/CategoryChips";
 
 type CategoryLayoutProps = {
@@ -14,22 +13,12 @@ type CategoryLayoutProps = {
 }
 
 export function CategoryLayout({ isAdmin }: CategoryLayoutProps) {
-  const [categories, setCategories] = useState<ICategory[]>();
+  const { categories, getCategories } = useContext(CategoryContext);
 
   useEffect(() => {
-    fetchCategories();
-  }, [])
-
-  async function fetchCategories() {
-    try {
-      const response = await CategoryService.getCategories();
-      console.log(response);
-
-      setCategories(response);
-    } catch(err) {
-      console.error(err);
-    }
-  }
+    if (!categories)
+      getCategories();
+  }, [categories, getCategories])
 
   return <Container alignment="flex-row" className="py-4 h-full">
     <section className="flex pr-4 flex-col items-start gap-4 border-r-2 border-silver-chalice-400 w-1/5 2xl:w-1/6">
