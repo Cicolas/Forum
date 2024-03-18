@@ -42,7 +42,7 @@ export function PostListing({
   where,
   newPostAble
 }: FeedProps) {
-  const newPostLink = "/feed/new" + (where ? `?categoryName=${where?.name}` : "");
+  const newPostLink = "/post/new" + (where ? `?categoryName=${where?.name}` : "");
 
   return <>
     <div className="flex justify-between items-center self-stretch">

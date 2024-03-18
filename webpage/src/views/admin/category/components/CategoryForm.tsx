@@ -113,6 +113,7 @@ export function CategoryForm({defaultName, defaultDescription, defaultColor, isC
               value={nameValue??""}
               onChange={ev => setValue("name", ev.target.value)}
               placeholder="Insira o nome da cartegoria"
+              disabled={!isCreate}
             >
             </Input>
           </FormField>

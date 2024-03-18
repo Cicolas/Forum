@@ -6,6 +6,6 @@ export interface IPost {
   title: string;
   content: string;
   rank: IRank;
-  created_at: Date;
+  createdAt: Date;
   last_update: Date;
 }

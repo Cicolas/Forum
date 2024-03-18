@@ -38,28 +38,20 @@ function LikeButtonWrapper({ orientation, className, children }: LikeButtonWrapp
 }
 
 export function LikeButton({ count, state, orientation, onLike, onDislike, className }: LikeButtonProps) {
-  function handleLike() {
-    if (onLike) onLike();
-  }
-
-  function handleDislike() {
-    if (onDislike) onDislike();
-  }
-
   return (<>
     <LikeButtonWrapper orientation={orientation} className={className}>
       <ArrowCircleUp
         className={`${state === "upvote" ? LikeButtonColorClasses["upvote"] : LikeButtonColorClasses["undefined"]} cursor-pointer`}
         size={24}
         weight="bold"
-        onClick={handleLike}
+        onClick={onLike}
       ></ArrowCircleUp>
       {count}
       <ArrowCircleDown
         className={`${state === "downvote" ? LikeButtonColorClasses["downvote"] : LikeButtonColorClasses["undefined"]} cursor-pointer`}
         size={24}
         weight="bold"
-        onClick={handleDislike}
+        onClick={onDislike}
       ></ArrowCircleDown>
     </LikeButtonWrapper>
   </>)

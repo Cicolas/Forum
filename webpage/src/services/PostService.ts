@@ -9,7 +9,7 @@ const posts: IPost[] = [
     title: "Teste muito absurdo",
     author: "Cicolas",
     content: "Lorem Ipsun Dolor Sit Amet.",
-    created_at: new Date(),
+    createdAt: new Date(),
     last_update: new Date()
   }
 ]

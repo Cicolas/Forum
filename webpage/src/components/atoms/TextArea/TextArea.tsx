@@ -8,7 +8,7 @@ type TextAreaProps = {
   minHeight?: string;
   borderless?: boolean;
 
-  onChange: ChangeEventHandler<HTMLTextAreaElement>;
+  onChange?: ChangeEventHandler<HTMLTextAreaElement>;
 }
 
 export function TextArea({ placeholder, value, onChange, className, minHeight, borderless }: TextAreaProps) {
@@ -21,7 +21,7 @@ export function TextArea({ placeholder, value, onChange, className, minHeight, b
     bg-serenade-50
     ${borderless?"":"border-2 border-silver-chalice-400 border-opacity-25"} rounded-lg
     leading-normal tracking-wider font-roboto text-justify
-    font-normal 
+    font-normal
     overflow-hidden resize-none ${className}
   `}
   style={{height: minHeight}}

@@ -14,6 +14,7 @@ import PostService from './services/PostService';
 import { HomePage } from './views/home/HomePage';
 import _404Page from './views/_404Page';
 import { AdminCategoryPage } from './views/admin/category/AdminCategoryPage';
+import { NewPostPage } from './views/post/NewPostPage';
 
 const redirectLoader = (path: string) => async () => redirect(path);
 
@@ -44,13 +45,20 @@ const router = createBrowserRouter(
           }
         ></Route>
       </Route>
-      <Route
-        path="post/:postId"
-        element={<PostPage />}
-        loader={({ params }) =>
-          PostService.getPostById(params.postId as string)
-        }
-      ></Route>
+      <Route path="post">
+        <Route
+          path=":postId"
+          element={<PostPage />}
+          loader={({ params }) =>
+            PostService.getPostById(params.postId as string)
+          }
+        ></Route>
+        <Route
+          path="new"
+          element={<NewPostPage />}
+        >
+        </Route>
+      </Route>
       <Route
         path="user/:userId"
         element={<UserPage />}
