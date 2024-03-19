@@ -1,16 +1,20 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { O } from "ts-toolbelt";
 import { api } from "../lib/axios";
 import { IPost } from "../utils/interfaces/post"
+
+type CreatePostRequest = O.Omit<IPost, "createdAt" | "lastUpdate" | "id" | "rank">;
 
 const posts: IPost[] = [
   {
     id: "1234",
     rank: {upVotes: [], downVotes: []},
     title: "Teste muito absurdo",
+    categories: ["Teste", "Absurdo"],
     author: "Cicolas",
     content: "Lorem Ipsun Dolor Sit Amet.",
     createdAt: new Date(),
-    last_update: new Date()
+    lastUpdate: new Date()
   }
 ]
 
@@ -43,6 +47,12 @@ const PostService = {
       resolve(posts);
     });
   },
+
+  createPost: async (data: CreatePostRequest) => {
+    return new Promise((resolve, reject) => {
+      resolve(data);
+    });
+  }
 }
 
 export default PostService;

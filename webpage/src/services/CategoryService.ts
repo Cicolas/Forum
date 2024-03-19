@@ -6,7 +6,7 @@ export type UpdateCategoryRequest = O.Omit<ICategory, "createdAt">;
 
 let categories: ICategory[] = [
   {name: "Brasil", color: "#6D8C003D", description: "Posts relacionado com o Brasil", createdAt: new Date()},
-  {name: "Humor", color: "#BD613C40", description: "Posts de humor duvidoso", createdAt: new Date()}
+  {name: "Humor", color: "#BD613C40", description: "Posts de humor duvidoso", createdAt: new Date()},
 ]
 
 /* eslint-disable @typescript-eslint/no-unused-vars */

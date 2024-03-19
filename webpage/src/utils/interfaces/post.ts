@@ -5,7 +5,8 @@ export interface IPost {
   author: string;
   title: string;
   content: string;
+  categories: string[];
   rank: IRank;
   createdAt: Date;
-  last_update: Date;
+  lastUpdate: Date;
 }
