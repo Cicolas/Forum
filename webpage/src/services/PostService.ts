@@ -20,7 +20,7 @@ const PostService = {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         resolve(posts.find(p => p.id === id));
-      }, 1000)
+      })
     })
   },
 
@@ -28,7 +28,7 @@ const PostService = {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         resolve(posts);
-      }, 1000)
+      })
     });
   },
 

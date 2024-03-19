@@ -3,6 +3,17 @@ import { O } from "ts-toolbelt";
 import IUser from "../utils/interfaces/user";
 
 export type UserRegisterRequest = O.Omit<O.Omit<IUser, "id">, "createdAt">;
+export type UserLoginResponse = {
+  token: string;
+  user: O.Omit<IUser, "createAt">;
+}
+
+// const user = {
+//   id: "123",
+//   name: "user",
+//   email: "nicolas.mnw@gmail.com",
+//   avatarUrl: "https://avatars.githubusercontent.com/u/32042329?v=4",
+// };
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 const AuthService = {

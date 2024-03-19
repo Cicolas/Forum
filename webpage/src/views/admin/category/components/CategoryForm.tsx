@@ -1,7 +1,7 @@
 import { Trash } from "phosphor-react";
 import { FormField } from "../../../../components/molecules/FormField/FormField";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { Button } from "../../../../components/atoms/Button/Button";
 import Input from "../../../../components/atoms/Input/Input";
 import { Label } from "../../../../components/atoms/Label/Label";
@@ -11,6 +11,7 @@ import { CategoryPreview } from "./CategoryPreview";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { AuthContext } from "../../../../context/AuthContext";
 
 type CategoryFormProps = {
   defaultName?: string;
@@ -59,6 +60,9 @@ export type categoryFormData = z.infer<typeof categoryFormSchema>;
 export function CategoryForm({defaultName, defaultDescription, defaultColor, isCreate, onSave, onDelete, onDiscard}: CategoryFormProps) {
   const navigate = useNavigate();
 
+  const { permissions } = useContext(AuthContext);
+  const canDelete = permissions.includes("delete-category");
+
   const {
     handleSubmit,
     setValue,
@@ -98,7 +102,7 @@ export function CategoryForm({defaultName, defaultDescription, defaultColor, isC
           <h1 className="text-2xl font-bold leading-normal text-ellipsis max-w-full">
             {isCreate ? "Adicionar" : "Editar"} Categoria: {nameValue}
           </h1>
-          {!isCreate &&
+          {!isCreate && canDelete &&
             <button onClick={onDelete}>
               <Trash size={24} className="text-silver-chalice-400 hover:text-serenade-700"></Trash>
             </button>

@@ -15,6 +15,7 @@ import { HomePage } from './views/home/HomePage';
 import _404Page from './views/_404Page';
 import { AdminCategoryPage } from './views/admin/category/AdminCategoryPage';
 import { NewPostPage } from './views/post/NewPostPage';
+import UserService from './services/UserService';
 
 const redirectLoader = (path: string) => async () => redirect(path);
 
@@ -62,8 +63,11 @@ const router = createBrowserRouter(
       <Route
         path="user/:userId"
         element={<UserPage />}
-        loader={({ params }) =>
-          PostService.getAllPostByUser(params.userId as string)
+        loader={async ({ params }) =>
+          ({
+            posts: await PostService.getAllPostByUser(params.userId as string),
+            user: (await UserService.getUser(params.userId as string))[0],
+          })
         }
       ></Route>
     </Route>

@@ -19,6 +19,8 @@ type LikeButtonProps = {
   count: number;
   state: VoteType;
   orientation: "vertical" | "horizontal";
+  disabled?: boolean;
+
   onLike?: () => void;
   onDislike?: () => void;
   className?: string;
@@ -37,18 +39,18 @@ function LikeButtonWrapper({ orientation, className, children }: LikeButtonWrapp
     </div>
 }
 
-export function LikeButton({ count, state, orientation, onLike, onDislike, className }: LikeButtonProps) {
+export function LikeButton({ count, state, orientation, disabled, onLike, onDislike, className }: LikeButtonProps) {
   return (<>
     <LikeButtonWrapper orientation={orientation} className={className}>
       <ArrowCircleUp
-        className={`${state === "upvote" ? LikeButtonColorClasses["upvote"] : LikeButtonColorClasses["undefined"]} cursor-pointer`}
+        className={`${state === "upvote" ? LikeButtonColorClasses["upvote"] : LikeButtonColorClasses["undefined"]} cursor-pointer ${disabled && "hidden"}`}
         size={24}
         weight="bold"
         onClick={onLike}
       ></ArrowCircleUp>
       {count}
       <ArrowCircleDown
-        className={`${state === "downvote" ? LikeButtonColorClasses["downvote"] : LikeButtonColorClasses["undefined"]} cursor-pointer`}
+        className={`${state === "downvote" ? LikeButtonColorClasses["downvote"] : LikeButtonColorClasses["undefined"]} cursor-pointer ${disabled && "hidden"}`}
         size={24}
         weight="bold"
         onClick={onDislike}

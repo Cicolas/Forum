@@ -5,7 +5,9 @@ import { AuthContext } from "../../../context/AuthContext";
 import { Logo } from "../../atoms/Logo/Logo";
 
 export function Header() {
-  const { authenticated, logout } = useContext(AuthContext);
+  const { user, authenticated, logout } = useContext(AuthContext);
+  const linkUser = `/user/${user?.name}`;
+
   const navigate = useNavigate();
 
   function handleLogout() {
@@ -20,7 +22,7 @@ export function Header() {
       <div className="absolute hidden md:flex right-1/2 items-center gap-8 italic cursor-pointer tracking-wider translate-x-1/2">
         <Link to="/home">Home</Link>
         <Link to="/feed/recent">Recentes</Link>
-        <Link to="/user">Perfil</Link>
+        {authenticated && <Link to={linkUser}>Perfil</Link>}
       </div>
         {authenticated ? (
           <div className="flex flex-row gap-4 items-center">

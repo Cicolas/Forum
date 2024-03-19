@@ -6,6 +6,8 @@ import { CategoryChip } from "../Chips/CategoryChip";
 import { ICategory } from "../../../utils/interfaces/category";
 import { Label } from "../../atoms/Label/Label";
 import { Spacer } from "../../atoms/Spacer/Spacer";
+import { useContext } from "react";
+import { AuthContext } from "../../../context/AuthContext";
 
 type FeedProps = {
   title?: string;
@@ -44,6 +46,9 @@ export function PostListing({
 }: FeedProps) {
   const newPostLink = "/post/new" + (where ? `?categoryName=${where?.name}` : "");
 
+  const { permissions } = useContext(AuthContext);
+  const canCreate = permissions.includes("create-contribution");
+
   return <>
     <div className="flex justify-between items-center self-stretch">
       <Spacer>
@@ -54,7 +59,7 @@ export function PostListing({
         </>}
       </Spacer>
       <div className="flex items-baseline gap-2 text-silver-chalice-400 italic cursor-pointer">
-        {newPostAble &&
+        {newPostAble && canCreate &&
           <Link className="word-spacing-2" to={newPostLink}>
             <Label color="light-gray" italic>Novo Post</Label>
             &nbsp;

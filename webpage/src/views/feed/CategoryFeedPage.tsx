@@ -12,7 +12,7 @@ export function CategoryFeedPage() {
       <PostListing
         title="Últimos posts"
         posts={posts??[]}
-        where={{name: categoryName??"", description: "", color: "#10101010"}}
+        where={{name: categoryName??"", description: "", color: "#10101010", createdAt: new Date()}}
         newPostAble
       >
       </PostListing>

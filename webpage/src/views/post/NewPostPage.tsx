@@ -48,8 +48,8 @@ export function NewPostPage() {
     content={contentValue}
     categories={categoryNamesValue}
     onTitleChange={(ev) => setValue("title", ev.target.value)}
+    onContentChange={(ev) => setValue("content", ev.target.value)}
     editable
   >
-
   </PostLayout>
 }
