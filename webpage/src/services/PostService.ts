@@ -4,13 +4,18 @@ import { api } from "../lib/axios";
 import { IPost } from "../utils/interfaces/post"
 
 type CreatePostRequest = O.Omit<IPost, "createdAt" | "lastUpdate" | "id" | "rank">;
+type GetAllPostQuery = {
+  category?: string;
+  author?: string;
+  title?: string;
+}
 
 const posts: IPost[] = [
   {
     id: "1234",
     rank: {upVotes: [], downVotes: []},
     title: "Teste muito absurdo",
-    categories: ["Teste", "Absurdo"],
+    categories: ["Brasil", "Humor"],
     author: "Cicolas",
     content: "Lorem Ipsun Dolor Sit Amet.",
     createdAt: new Date(),
@@ -28,7 +33,7 @@ const PostService = {
     })
   },
 
-  getAllPost: async () => {
+  getAllPost: async (params?: GetAllPostQuery) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         resolve(posts);
@@ -37,12 +42,6 @@ const PostService = {
   },
 
   getAllPostByCategory: async (name: string) => {
-    return new Promise((resolve, reject) => {
-      resolve(posts);
-    });
-  },
-
-  getAllPostByUser: async (userId: string) => {
     return new Promise((resolve, reject) => {
       resolve(posts);
     });

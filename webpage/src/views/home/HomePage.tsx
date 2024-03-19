@@ -28,7 +28,7 @@ export function HomePage() {
         >
         </Button>
         {!authenticated &&
-          <Link to="/feed">
+          <Link to="/feed/recent">
             <Label className="text-orient-800" light italic>
               Entrar sem logar &gt;
             </Label>

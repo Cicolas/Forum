@@ -18,7 +18,7 @@ const newPostFormSchema = z.object({
       name: z.string(),
       color: z.string(),
     })
-  ).or(z.undefined())
+  )
 })
 
 export type newPostFormData = z.infer<typeof newPostFormSchema>;
@@ -37,7 +37,12 @@ export function NewPostPage() {
     watch,
     formState: { isSubmitting }
   } = useForm<newPostFormData>({
-    resolver: zodResolver(newPostFormSchema)
+    resolver: zodResolver(newPostFormSchema),
+    values: {
+      title: "",
+      content: "",
+      categories: []
+    }
   });
 
   const titleValue = watch("title");
@@ -56,10 +61,11 @@ export function NewPostPage() {
         title: data.title,
         author: user.name,
         content: data.content,
-        categories: data.categories?.map(category => category.name)??[]
+        categories: data.categories.map(category => category.name)
       })
 
-      toast.info("Categoria criada com sucesso!");
+      toast.info("Post criado com sucesso!");
+      navigate("/feed/recent");
     } catch (err) {
       toast.error("Erro ao criar post");
     }

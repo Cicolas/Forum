@@ -10,7 +10,7 @@ import { useContext } from "react";
 import { AuthContext } from "../../../context/AuthContext";
 
 type FeedProps = {
-  title?: string;
+  title: string;
   posts: IPost[];
   where?: ICategory;
   newPostAble?: boolean;
@@ -52,7 +52,7 @@ export function PostListing({
   return <>
     <div className="flex justify-between items-center self-stretch">
       <Spacer>
-        <h1 className="word-spacing-normal font-bold text-2xl inline">{title??""}</h1>
+        <h1 className="word-spacing-normal font-bold text-2xl inline">{title}</h1>
         {where && <>
           <span className="text-silver-chalice-400 font-light"> em </span>
           <CategoryChip name={where.name} color={where.color}></CategoryChip>

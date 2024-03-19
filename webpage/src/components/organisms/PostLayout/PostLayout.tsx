@@ -121,8 +121,12 @@ export function PostLayout(
               &nbsp;
               <Label light>em</Label>
               &nbsp;
-              {categories?.map((category) => <>
-                <Chip {...category}></Chip>
+              {categories.map((category) => <>
+                {editable ?
+                  <Chip {...category}></Chip>
+                  :
+                  <CategoryChip {...category}></CategoryChip>
+                }
                 &nbsp;
               </>
               )}

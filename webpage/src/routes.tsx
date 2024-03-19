@@ -16,6 +16,7 @@ import _404Page from './views/_404Page';
 import { AdminCategoryPage } from './views/admin/category/AdminCategoryPage';
 import { NewPostPage } from './views/post/NewPostPage';
 import UserService from './services/UserService';
+import { FeedPage } from './views/feed/FeedPage';
 
 const redirectLoader = (path: string) => async () => redirect(path);
 
@@ -31,8 +32,17 @@ const router = createBrowserRouter(
       </Route>
     </Route>
     <Route element={<Root />}>
-      <Route path="feed" loader={redirectLoader("recent")}></Route>
       <Route path="feed" element={<CategoryLayout />}>
+        <Route
+          path=""
+          element={<FeedPage />}
+          loader={({ params }) =>
+            PostService.getAllPost({
+              title: params.title??undefined,
+              author: params.author??undefined,
+            })
+          }
+        ></Route>
         <Route
           path="recent"
           element={<RecentFeedPage />}
@@ -65,7 +75,7 @@ const router = createBrowserRouter(
         element={<UserPage />}
         loader={async ({ params }) =>
           ({
-            posts: await PostService.getAllPostByUser(params.userId as string),
+            posts: await PostService.getAllPost({author: params.userId as string}),
             user: (await UserService.getUser(params.userId as string))[0],
           })
         }

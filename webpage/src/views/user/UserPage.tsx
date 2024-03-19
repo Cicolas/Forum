@@ -4,7 +4,6 @@ import dayjs from "dayjs";
 import { PostListing } from "../../components/molecules/PostListing/PostListing";
 import { IPost } from "../../utils/interfaces/post";
 import { Pencil, Check } from "phosphor-react";
-import { Title } from "../../components/atoms/Title/Title";
 import { Spacer } from "../../components/atoms/Spacer/Spacer";
 import { Label } from "../../components/atoms/Label/Label";
 import { useContext, useState } from "react";
@@ -45,8 +44,8 @@ function UserDetails({ name, createdAt }: UserDetailsProps) {
         setNameValue(name);
         toast.error("Erro ao atualizar nome.");
       }
-      setIsEditing(false);
     }
+    setIsEditing(false);
   }
 
   return <div className="flex py-4 items-center gap-4 self-stretch">
