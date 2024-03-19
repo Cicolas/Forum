@@ -11,7 +11,10 @@ class ListUsersService {
     this.usersRepository = usersRepository;
   }
 
-  public  List<User> execute() {
-    return this.usersRepository.list();
+  public  List<User> execute(UserListingRequest listingRequest) {
+    return this.usersRepository.list().stream().filter((user) -> {
+      return listingRequest.name == null || 
+             user.getName().equals(listingRequest.name);
+    }).toList();
   }
 }

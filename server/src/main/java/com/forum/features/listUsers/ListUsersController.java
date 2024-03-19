@@ -13,7 +13,11 @@ class ListUsersController implements HttpEndpointHandler {
   }
 
   public void handle(HttpRequest request, HttpResponse response) {
-    List<User> users = this.listUsersService.execute();
+    UserListingRequest listingRequest = new UserListingRequest();
+    
+    listingRequest.name = request.getQueryParam("name");
+    
+    List<User> users = this.listUsersService.execute(listingRequest);
     List<CompleteUserView> userViews = users.stream().map(CompleteUserView::new).toList();
 
     response.json(userViews);
