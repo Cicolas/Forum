@@ -18,6 +18,7 @@ import com.forum.features.createMember.CreateMember;
 
 import com.forum.features.createAdmin.CreateAdmin;
 import com.forum.features.authenticateUser.AuthenticateUser;
+import com.forum.features.currentUser.CurrentUser;
 import com.forum.features.updateUser.UpdateUser;
 import com.forum.features.deleteUser.DeleteUser;
 
@@ -58,7 +59,8 @@ public class Main {
     RolesRepository rolesRepository = new HibernateRolesRepository(transaction);
     PermissionsRepository permissionsRepository = new HibernatePermissionsRepository(transaction);
 
-    var restrictedEndpoint = new RestrictedEndpointFactory();
+    var restrictedEndpoint = new RestrictedEndpointFactory();    
+    var authenticatedEndpoint = new AuthenticatedEndpointFactory();
 
     app.get("/permissions", restrictedEndpoint.create(
       new ListPermissions(permissionsRepository).handler,
@@ -90,6 +92,10 @@ public class Main {
       "delete-role"
     ));
 
+    app.get("/users/current", authenticatedEndpoint.create(
+        new CurrentUser(usersRepository).handler
+    ));
+            
     app.get("/users", new ListUsers(usersRepository).handler);
 
     app.post("/members", new CreateMember(usersRepository, rolesRepository, permissionsRepository).handler);
