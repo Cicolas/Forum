@@ -191,7 +191,7 @@ export function PostLayout(
               onContentChange={onContentChange!}
               isSubmiting={isSubmiting}
               handleSubmit={handleSubmit}
-              onCancel={() => navigate(`/post/${id}`)}
+              onCancel={() => navigate("/feed/recent")}
             >
             </PostContentForm>
           }

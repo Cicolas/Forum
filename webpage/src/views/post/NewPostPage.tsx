@@ -52,10 +52,10 @@ export function NewPostPage() {
     }
 
     try {
-      await PostService.createPost(post);
+      const response = await PostService.createPost(post);
 
       toast.info("Post criado com sucesso!");
-      navigate("/feed/recent");
+      navigate(`/post/${response.id}`);
     } catch (err) {
       if (err instanceof Error) {
         toast.error(err.message);
@@ -76,8 +76,8 @@ export function NewPostPage() {
           categories: [],
           author: user,
           comments: [],
-          createdAt: new Date(),
-          lastUpdate: new Date(),
+          createdAt: 0,
+          lastUpdate: 0,
           upVotes: [],
           downVotes: [],
         }}

@@ -43,9 +43,11 @@ const PostService = {
     }
   },
 
-  createPost: async (data: CreatePostRequest) => {
+  createPost: async (data: CreatePostRequest): Promise<IPost> => {
     try {
-      await api.post("/posts", data);
+      const response = await api.post("/posts", data);
+
+      return response.data;
     } catch (err) {
       throw handleApiAxiosError(err, "Ocorreu um erro ao criar o post");
     }
