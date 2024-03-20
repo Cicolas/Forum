@@ -19,7 +19,7 @@ public class CurrentUserView {
   public int createdAt;
   
   public List<String> roles;
-  public List<String> pemissions;
+  public List<String> permissions;
 
   public CurrentUserView(User user) {
       
@@ -35,7 +35,7 @@ public class CurrentUserView {
       .map((role) -> role.getName())
       .toList();
     
-    this.pemissions = user.getRoles()
+    this.permissions = user.getRoles()
       .stream()
       .flatMap((role) -> 
         role.getPermissions()
