@@ -33,6 +33,7 @@ const PostService = {
         params: {
           category: params?.category,
           author: params?.author,
+          title: params?.title
         }
       });
 

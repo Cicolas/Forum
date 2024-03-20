@@ -36,12 +36,6 @@ const router = createBrowserRouter(
         <Route
           path=""
           element={<FeedPage />}
-          loader={({ params }) =>
-            PostService.getAllPost({
-              title: params.title??undefined,
-              author: params.author??undefined,
-            })
-          }
         ></Route>
         <Route
           path="recent"

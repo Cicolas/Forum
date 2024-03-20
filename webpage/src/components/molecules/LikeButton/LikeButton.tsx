@@ -1,5 +1,5 @@
 import { ArrowCircleDown, ArrowCircleUp } from "phosphor-react";
-import { ReactNode, useEffect, useMemo, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { VoteType } from "../../../utils/types/vote";
 
 const LikeButtonColorClasses = {

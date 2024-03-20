@@ -7,7 +7,6 @@ import { handleApiAxiosError } from "../utils/errorHandledRequest";
 
 type CurrentUserResponse = O.Merge<IUser, {roles: Role[], permissions: Permission[]}>;
 
-/* eslint-disable @typescript-eslint/no-unused-vars */
 const UserService = {
   getUser: async (name?: string): Promise<IUser[]> => {
     try {
@@ -24,7 +23,13 @@ const UserService = {
   },
 
   updateUser: async (user: IUser): Promise<IUser> => {
-    throw new Error("Not implemented");
+    try {
+      const response = await api.put<IUser>(`/users/${user.id}`, user);
+
+      return response.data;
+    } catch (err) {
+      throw handleApiAxiosError(err, "Ocorreu um erro ao atualizar usuario");
+    }
   },
 
   currentUser: async (): Promise<CurrentUserResponse> => {

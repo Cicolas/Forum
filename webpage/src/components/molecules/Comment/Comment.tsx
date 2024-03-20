@@ -5,7 +5,6 @@ import { useContext, useEffect, useState } from "react";
 import { VoteType } from "../../../utils/types/vote";
 import { IComment } from "../../../utils/interfaces/comment";
 import { countRank } from "../../../utils/countRank";
-import RankService, { RankAction } from "../../../services/RankService";
 import { Spacer } from "../../atoms/Spacer/Spacer";
 import { Label } from "../../atoms/Label/Label";
 import { Content } from "../../atoms/Content/Content";
