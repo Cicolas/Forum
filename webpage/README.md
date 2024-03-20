@@ -1,64 +1,65 @@
-# Forum Webpage
+# Webpage Forum
 
-This folder have all the code related to the Forum webpage
+Esta pasta contém todo o código relacionado com a webpage do Forum
 
-## How to run
+## Como Executar
 
-First of all, you need to understand how does the webpage works!
+A webpage usa Vite como o servidor de desenvolvimento (mais em: [Vite](https://vitejs.dev))
+utilizando a configuração padrão para React. Acima disso usamos TailwindCSS como biblioteca
+de CSS e Typescript para fazer o código. Tudo isso é executado com o ambiente de execução
+nodejs.
 
-The webpage uses Vite as a development server (more on: [Vite](https://vitejs.dev))
-with the default react template. Added to that we uses TailwindCSS as CSS library,
-and Typescript for coding. All of that works on top of nodejs runtime environment.
+## Prerequisitos
 
-## Prerequisites
+- [nodejs](https://nodejs.org) 18.19.0 or acima
+- [npm](https://npmjs.com) _geralmente instalado com o node_
+- [git](https://git-scm.com/) (opcional)
+- [python](https://python.org) (opcional)
 
-- [nodejs](https://nodejs.org) 18.19.0 or above
-- [npm](https://npmjs.com) _usually comes with node_
-- [git](https://git-scm.com/) (optional)
-- [python](https://python.org) (optional)
+## Execcutando!
 
-## Running!
-
-After installing nodejs all you need is clone the repository
+Após a instalação do nodejs, é necessário clonar o repositorio
 
 ```sh
 $ git clone https://github.com/andre-sch/forum.git
 ```
 
-Thus you can go to webpage folder
+Depois disso você pode ir para a pagina da webpage
 
 ```sh
 $ cd forum/webpage
 ```
 
-Now you need to download all the dependencies of the application, to do so you can run:
+Agora você precisa instalar todas as depencias da aplicação, para isso execute:
 
 ```sh
 $ npm install
-# or just
+# ou
 $ npm i
 ```
 
-After a while npm will download all the dependencies in `node_modules` folder.
+Após um tmepo o npm irá _baixar_ todas as dependências na pasta `node_modules`.
 
-With everything downloaded you can finally run the webpage
+Com tudo configurado você poderá finalmente executar a webpage em modo desenvolvimento
 
 ```sh
 $ npm run dev
 ```
 
-The webpage will normally be served on http://localhost:5173/
+Geralmente o Vite irá abrir a página em http://localhost:5173/
 
-## Building
+## Compilando
 
-To build the application you can simply run the
+Para Compilar a aplicação em uma página estática, você pode executar:
 
 ```sh
 $ npm run build
 ```
 
-And Vite will generate a `/dist/` folder containing the built webpage
-to serve the webpage you can do the following commands
+O Vite irá gerar uma pasta `/dist/` contendo a paginá compilada
+
+Para servir a página, há diversas maneiras, mas uma delas é executando um 
+http server com python. Como segue:
 
 ```sh
 $ cd dist
