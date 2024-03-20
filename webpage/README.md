@@ -6,9 +6,11 @@ This folder have all the code related to the Forum webpage
 
 First of all, you need to understand how does the webpage works!
 
-The webpage uses Vite as a development server (more on: [Vite](https://vitejs.dev)) with the default react template. Added to that we uses TailwindCSS as CSS library, and Typescript for coding. All of that works on top of nodejs runtime environment.
+The webpage uses Vite as a development server (more on: [Vite](https://vitejs.dev))
+with the default react template. Added to that we uses TailwindCSS as CSS library,
+and Typescript for coding. All of that works on top of nodejs runtime environment.
 
-## Prerequisites 
+## Prerequisites
 
 - [nodejs](https://nodejs.org) 18.19.0 or above
 - [npm](https://npmjs.com) _usually comes with node_
@@ -17,7 +19,7 @@ The webpage uses Vite as a development server (more on: [Vite](https://vitejs.de
 
 ## Running!
 
-After installing nodejs all you need is clone the repository 
+After installing nodejs all you need is clone the repository
 
 ```sh
 $ git clone https://github.com/andre-sch/forum.git
@@ -37,7 +39,7 @@ $ npm install
 $ npm i
 ```
 
-After a while npm will download all the dependencies in ```node_modules``` folder.
+After a while npm will download all the dependencies in `node_modules` folder.
 
 With everything downloaded you can finally run the webpage
 
@@ -55,7 +57,8 @@ To build the application you can simply run the
 $ npm run build
 ```
 
-Aand Vite will generate a `/dist/` folder containing the built webpage to serve the webpage you can do the following commands
+And Vite will generate a `/dist/` folder containing the built webpage
+to serve the webpage you can do the following commands
 
 ```sh
 $ cd dist

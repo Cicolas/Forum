@@ -1,35 +1,37 @@
 # Forum
 
-## Overview
+## Resumo
 
-The system provides an environment for discussion threads between community members.
+O sistema providencia um ambiente para a discussão entre membros de uma comunidade.
+O projeto é divido em duas frentes: um cliente e um servidor. Veja a documentação `README.md` de cada um para executar localmente.
 
-## Requirements
+## Requisitos
 
-1. A user must contain: id, name, email, password, image and date of creation
+1. Um usuário deve conter: id, nome, email, senha, imagem e data de criação.
 
-   - Id and email must be unique
-   - Password must be encrypted
+   - Os campos id e email devem ser únicos.
+   - A senha deve ser criptografada.
 
-2. The system must have authentication
+2. O sistema deve possuir controle de autenticação.
 
-3. The system must have authorization
+3. O sistema deve possuir controle de autorização.
 
-   - Each user in the system must be associated with permissions, which can be grouped into roles
-   - The system must support two types of users: members and administrators
-   - Members can create and rank contributions – posts and comments. In addition to manage your own account
-   - Administrators can create roles, permissions and categories
-   - A role/permission must contain: name (unique), description and date of creation
+   - A cada usuário no sistema deve ser associado permissões, as quais podem ser agrupadas em papéis.
+   - O sistema deve suportar dois tipos de usuários: membros e administradores.
+   - Aos membros deve ser permitida a manutenção de contribuições – postagens e
+     comentários – bem como o ranqueamento das mesmas. Além do devido gerenciamento de sua própria conta.
+   - Os administradores estendem as permissões dos membros, com o acréscimo do controle da categorização
+     de postagens e gerenciamento de usuários e permissões.
+   - Um papel ou permissão deve conter: nome (único), descrição e data de criação.
 
-4. The system must store user contributions
+4. O sistema deve armazenar as contribuições de usuários. Uma postagem deve conter:
+   id, autoria, título, conteúdo, categorias, comentários e datas (criação, última atualização).
 
-   - A contribution must be accessible to any user on the system, even without being authenticated
-   - A post must contain: id, author, title, content, categories, comments and dates (creation, last update)
-   - A category must contain: name (unique), description, color and date of creation
-   - A comment must contain: id, author, content and dates (creation, last update)
-   - A comment can reference another as an answer
+   - Uma categoria deve conter: nome (único), descrição, cor e data de criação.
+   - Um comentário deve conter: identificador, autoria, conteúdo e datas (criação, última atualização).
+     Um comentário pode referenciar outro como uma resposta.
 
-5. Contributions can be ranked by community
+5. As contribuições devem ser sujeitas a ranqueamentos pelos membros da comunidade.
 
-   - A ranking can be either positive or negative
-   - A user can only participate once
+   - O sistema deve permitir votos positivos e negativos.
+   - Um usuário pode participar uma única vez no ranqueamento de uma contribuição, votando exclusivamente a favor ou contra.

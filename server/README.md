@@ -1,31 +1,57 @@
 # Forum Server
 
-## Config
+## Configuração
 
-### Prerequisites
+### Pré-requisitos
 
-- Connect to MySQL database
-- Install Maven CLI
+- Inicie uma conexão com o MySQL
+- Instale o Maven CLI
 
-### Environment Variables
+### ORM com Hibernate
 
-- Replace `.env.example` in `main/java/` by `.env`.
-- Set a JWT generation secret.
+- Defina a configuração do JPA ao substituir `persistence.example.xml` por `persistence.xml` em `resources/META-INF/`
+  e alterar as propriedades da conexão – _url_, _user_ e _password_.
 
-### ORM with Hibernate
+### Migrations com Flyway
 
-- Using JPA standard, you must replace `persistence.example.xml` in `resources/META-INF/`
-  by removing .example extension and changing connection properties – url, user and password – to your own.
+- Substitua `flyway.example.conf` por `flyway.conf` na raiz do projeto preenchendo os mesmos dados da conexão.
+- Execute `mvn flyway:migrate` com o terminal no diretório `server/`, para obter o estado atual do banco de dados.
+- Insira o primeiro administrador manualmente, criando uma conta `member` e associando à função `admin`.
 
-### Migrations with Flyway
+### Variáveis ​​ambiente
 
-- Replace `flyway.example.conf` in root using the same process listed in the previous section.
-- To get the current state of the database, run `mvn flyway:migrate` on terminal in `server` directory.
-- Insert the first administrator manually, by creating a `member` account and associating it with the `admin` role.
+- Substitua `.env.example` em `main/java/` por `.env`.
+- Defina um chave para a geração de tokens JWT.
+
+## Estrutura
+
+O servidor está organizado da seguinte forma:
+
+```text
+forum/
+├─── endpoints/
+├─── entities/
+├─── exceptions/
+├─── features/
+├─── http/
+├─── repositories/
+├─── security/
+├─── utils/
+├─── views/
+└─── Main.java
+```
+
+O núcleo do projeto é composto por entidades - `entities/` e funcionalidades - `features/`.
+Cada funcionalidade do sistema é modularizada em um pacote, onde há casos de uso e controladores,
+além de interfaces e injeções de dependência.
+
+O acesso ao banco de dados é intermediada por repositórios - `repositories/`,
+interfaces que abstraem uma unidade de persistência. A partir delas, implementa-se
+uma conexão com o MySQL pelo uso do Hibernate como ORM.
 
 ## Endpoints
 
-> On restricted routes, which require roles, the client must enter a JWT in bearer authentication.
+> Em rotas restritas, o cliente deve fornecer um token de autenticação.
 
 | Endpoint                               | Required roles |
 | -------------------------------------- | -------------- |
