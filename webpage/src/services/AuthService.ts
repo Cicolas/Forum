@@ -1,6 +1,4 @@
 import IToken from "../utils/interfaces/token";
-import { O } from "ts-toolbelt";
-import IUser from "../utils/interfaces/user";
 import { api } from "../lib/axios";
 import { handleApiAxiosError } from "../utils/errorHandledRequest";
 

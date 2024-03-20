@@ -1,21 +1,23 @@
 import dayjs from "dayjs";
 import { LikeButton } from "../LikeButton/LikeButton";
 import { UserLink } from "../../atoms/UserLink/UserLink";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { VoteType } from "../../../utils/types/vote";
 import { IComment } from "../../../utils/interfaces/comment";
 import { countRank } from "../../../utils/countRank";
-import LikeService from "../../../services/LikeService";
+import RankService, { RankAction } from "../../../services/RankService";
 import { Spacer } from "../../atoms/Spacer/Spacer";
 import { Label } from "../../atoms/Label/Label";
 import { Content } from "../../atoms/Content/Content";
 import { Bullet } from "../../atoms/Bullet/Bullet";
 import { TextArea } from "../../atoms/TextArea/TextArea";
-import { KeyReturn, PaperPlaneRight } from "phosphor-react";
-import { CommentService } from "../../../services/CommentService";
+import { PaperPlaneRight } from "phosphor-react";
 import { AuthContext } from "../../../context/AuthContext";
 import { toast } from "react-toastify";
 import { timestampToDate } from "../../../utils/types/timestamp";
+import CommentService from "../../../services/CommentService";
+import { voteContribution } from "../../../utils/voting";
+import { getUserRankState } from "../../../utils/getUserRankState";
 
 type CommentProps = {
   comment: IComment;
@@ -36,36 +38,52 @@ export function Comment({
     replies,
   } = comment;
 
-  const [ likeState, setLikeState ] = useState<VoteType>("undefined");
+  const [ likeState, setLikeState ] = useState<VoteType>();
+  const [ hasVoted, setHasVoted ] = useState<VoteType>();
+
   const [ isReplying, setIsReplying ] = useState(false);
+
   const [ reply, setReply ] = useState("");
+  const [ repliesList, setRepliesList ] = useState<IComment[]>(replies);
 
-  const handleVote = (vote: VoteType) => {
-    const action = vote === "upvote" ? LikeService.likeComment : LikeService.dislikeComment;
+  useEffect(() => {
+    if (user) {
+      const rank = getUserRankState(comment, user.id);
+      setLikeState(rank);
+      setHasVoted(rank);
+    }
+  }, [user, comment]);
 
-    action(comment.id).then(() => {
-      if (likeState === vote)
-        setLikeState("undefined");
-      else
-        setLikeState(vote);
+  const handleVote = async (rank: VoteType) => {
+    voteContribution({
+      user,
+      contributionId: id,
+      rank,
+      likeState,
+      setLikeState
     });
   }
 
-  const handleReply = () => {
+  const handleReply = async() => {
     if (!user) {
       toast.error("Você precisa estar logado para comentar.");
       return;
     }
 
     if (reply) {
-      CommentService.createComment({
-        parentId: comment.id,
-        authorId: user!.id,
-        content: reply
-      });
+      try {
+        const response = await CommentService.createComment({
+          parentId: id,
+          authorId: user!.id,
+          content: reply
+        });
 
-      setReply("");
-      setIsReplying(false);
+        setRepliesList(prev => ([...prev, response]));
+        setReply("");
+        setIsReplying(false);
+      } catch (error) {
+        toast.error("Erro ao enviar comentário.");
+      }
     }
   }
 
@@ -75,6 +93,7 @@ export function Comment({
         count={countRank(comment)}
         orientation="vertical"
         state={likeState}
+        hasVoted={hasVoted}
         onLike={handleVote.bind(undefined, "upvote")}
         onDislike={handleVote.bind(undefined, "downvote")}
       >
@@ -121,8 +140,8 @@ export function Comment({
 
 
         <div className="flex flex-col gap-4">
-          {replies.map((comment) => (
-            <Comment key={id} comment={comment} />
+          {repliesList.map((comment) => (
+            <Comment key={comment.id} comment={comment} />
           ))}
         </div>
       </Content>

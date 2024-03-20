@@ -6,8 +6,8 @@ import { UserLink } from "../../atoms/UserLink/UserLink";
 import { CategoryChip } from "../../molecules/Chips/CategoryChip";
 import { LikeButton } from "../../molecules/LikeButton/LikeButton";
 import { ICategory } from "../../../utils/interfaces/category";
-import { ChangeEventHandler, ReactNode, useContext, useState } from "react";
-import LikeService from "../../../services/LikeService";
+import { ChangeEventHandler, ReactNode, useContext, useEffect, useState } from "react";
+import RankService, { RankAction } from "../../../services/RankService";
 import { VoteType } from "../../../utils/types/vote";
 import { AddPostCategoryChip } from "../../molecules/Chips/AddPostCategoryChip";
 import { AuthContext } from "../../../context/AuthContext";
@@ -20,6 +20,9 @@ import { countRank } from "../../../utils/countRank";
 import { PostContent } from "../PostContent/PostContent";
 import { PostContentForm } from "../PostContentForm/PostContentForm";
 import { CommentSection } from "../CommentSection/CommentSection";
+import { toast } from "react-toastify";
+import { getUserRankState } from "../../../utils/getUserRankState";
+import { voteContribution } from "../../../utils/voting";
 
 type PostLayoutProps = {
   likable?: boolean;
@@ -79,27 +82,33 @@ export function PostLayout(
 
   const likeCount = countRank(post);
 
-  const canCreate = permissions?.includes("create-contribution");
-  const canUpdate = permissions?.includes("update-contribution") &&
+  const canCreateAndUpdate = permissions?.includes("update-contribution") &&
+                             author.name === user?.name;
+  const canDelete = permissions?.includes("delete-contribution") &&
                     author.name === user?.name;
-  const canDelete = permissions?.includes("delete-contribution");
-  const canRank = permissions?.includes("rank-contribution");
+  const canRank = permissions?.includes("rank-contribution") || true;
 
-  const [likeState, setLikeState] = useState<VoteType>("undefined");
+  const [ likeState, setLikeState ] = useState<VoteType>();
+  const [ hasVoted, setHasVoted ] = useState<VoteType>();
 
-  const [categoryModalOpen, setCategoryModalOpen] = useState(false);
-  const [isSubmiting, setIsSubmiting] = useState(false);
+  const [ categoryModalOpen, setCategoryModalOpen ] = useState(false);
+  const [ isSubmiting, setIsSubmiting ] = useState(false);
 
-  const handleVote = (vote: VoteType) => {
-    if (!id) return;
+  useEffect(() => {
+    if (user) {
+      const rank = getUserRankState(post, user.id);
+      setHasVoted(rank);
+      setLikeState(rank);
+    }
+  }, [user, post])
 
-    const action = vote === "upvote" ? LikeService.likePost : LikeService.dislikePost;
-
-    action(id).then(() => {
-      if (likeState === vote)
-        setLikeState("undefined");
-      else
-        setLikeState(vote);
+  const handleVote = async (rank: VoteType) => {
+    voteContribution({
+      user,
+      contributionId: id,
+      rank,
+      likeState,
+      setLikeState
     });
   }
 
@@ -113,14 +122,14 @@ export function PostLayout(
 
   return <>
     <CategoryFormModal
-      open={categoryModalOpen && !!canUpdate}
+      open={categoryModalOpen && !!canCreateAndUpdate}
       requestClose={() => setCategoryModalOpen(false)}
       onSubmit={(cat) => {if (onCategoriesChange) onCategoriesChange(cat)}}
     >
     </CategoryFormModal>
 
     <Container className="py-4">
-      <PostWrapper onSubmit={handleSubmit} editable={editable && canUpdate}>
+      <PostWrapper onSubmit={handleSubmit} editable={editable && canCreateAndUpdate}>
         <div className="flex flex-row justify-between items-center self-stretch">
           <div className="flex flex-col items-start gap-1">
             <Spacer>
@@ -128,7 +137,7 @@ export function PostLayout(
                 {author.name}
               </UserLink>
               &nbsp;
-              <Label light>em</Label>
+              {categories.length ? <Label light>em</Label> : ""}
               &nbsp;
               {categories.map((category) => <>
                 {editable ?
@@ -164,8 +173,9 @@ export function PostLayout(
               disabled={!canRank}
               orientation="horizontal"
               state={likeState}
-              onLike={handleVote.bind(undefined, "upvote")}
-              onDislike={handleVote.bind(undefined, "downvote")}
+              hasVoted={hasVoted}
+              onLike={() => handleVote("upvote")}
+              onDislike={() => handleVote("downvote")}
               className="hidden md:flex"
             >
             </LikeButton>

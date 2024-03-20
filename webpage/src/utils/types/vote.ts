@@ -1,1 +1,1 @@
-export type VoteType = "upvote" | "downvote" | "undefined"
+export type VoteType = "upvote" | "downvote" | "canceled";

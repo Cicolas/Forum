@@ -10,14 +10,23 @@ export type CreateCommentRequest = {
 }
 export type CreateCommentResponse = O.Omit<IComment, "upVotes" | "downVotes" | "replies">
 
-export const CommentService = {
+const CommentService = {
   createComment: async (comment: CreateCommentRequest): Promise<IComment> => {
     try {
-      const response = await api.post<IComment>("/comments", comment);
+      const response = await api.post<CreateCommentResponse>("/comments", comment);
 
-      return response.data;
+      const commentResponse = {
+        ...response.data,
+        upVotes: [],
+        downVotes: [],
+        replies: []
+      }
+
+      return commentResponse;
     } catch (err) {
       throw handleApiAxiosError(err, "Ocorreu um erro ao criar o comentário");
     }
   }
 }
+
+export default CommentService;

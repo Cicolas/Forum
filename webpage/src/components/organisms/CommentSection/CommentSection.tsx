@@ -5,9 +5,9 @@ import { TextArea } from "../../atoms/TextArea/TextArea";
 import { Title } from "../../atoms/Title/Title";
 import { Comment } from "../../molecules/Comment/Comment";
 import { useContext, useState } from "react";
-import { CommentService } from "../../../services/CommentService";
 import { AuthContext } from "../../../context/AuthContext";
 import { toast } from "react-toastify";
+import CommentService from "../../../services/CommentService";
 
 type ICommentSectionProps = {
   postId: string;
@@ -20,21 +20,27 @@ export function CommentSection({ postId, comments }: ICommentSectionProps) {
   const canComment = permissions?.includes("create-contribution") || true;
 
   const [comment, setComment] = useState("");
+  const [commentsList, setCommentsList] = useState<IComment[]>(comments);
 
-  const handleSubmit = () => {
+  const handleSubmit = async() => {
     if (!user) {
       toast.error("Você precisa estar logado para comentar.");
       return;
     }
 
     if (comment) {
-      CommentService.createComment({
-        parentId: postId,
-        authorId: "1",
-        content: comment
-      });
+      try {
+        const response = await CommentService.createComment({
+          parentId: postId,
+          authorId: user.id,
+          content: comment
+        });
 
-      setComment("");
+        setCommentsList(prev => ([...prev, response]));
+        setComment("");
+      } catch (error) {
+        toast.error("Erro ao criar comentário.");
+      }
     }
   }
 
@@ -66,7 +72,7 @@ export function CommentSection({ postId, comments }: ICommentSectionProps) {
       }
     </Content>
     <div className="flex flex-col gap-4">
-      {comments.map((comment) => (
+      {commentsList.map((comment) => (
         <Comment key={comment.id} comment={comment} />
       ))}
     </div>
