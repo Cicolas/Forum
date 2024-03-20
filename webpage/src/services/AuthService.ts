@@ -1,38 +1,39 @@
 import IToken from "../utils/interfaces/token";
 import { O } from "ts-toolbelt";
 import IUser from "../utils/interfaces/user";
+import { api } from "../lib/axios";
+import { handleApiAxiosError } from "../utils/errorHandledRequest";
 
-export type UserRegisterRequest = O.Omit<O.Omit<IUser, "id">, "createdAt">;
-export type UserLoginResponse = {
-  token: string;
-  user: O.Omit<IUser, "createAt">;
-}
+// ONLY FOR TESTS PURPOSES
+const CREATE_MEMBER_ROUTE = "/members";
 
-// const user = {
-//   id: "123",
-//   name: "user",
-//   email: "nicolas.mnw@gmail.com",
-//   avatarUrl: "https://avatars.githubusercontent.com/u/32042329?v=4",
-// };
+export type UserRegisterRequest = {
+  name: string;
+  email: string;
+  password: string;
+  avatarUrl: string;
+};
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 const AuthService = {
-  login: async (username: string, password: string): Promise<IToken> => {
-    return new Promise((resolve) => {
-      resolve({token: "1234"} as IToken)
-    });
+  login: async (email: string, password: string): Promise<IToken> => {
+    try {
+      const response = await api.post("/login", {email, password});
+
+      return response.data;
+    } catch (err) {
+      throw handleApiAxiosError(err, "Ocorreu um erro ao tentar logar-se");
+    }
   },
 
-  register: async (user: UserRegisterRequest): Promise<IToken> => {
-    return new Promise((resolve) => {
-      resolve({token: "1234"} as IToken)
-    });
-  },
+  register: async (user: UserRegisterRequest) => {
+    try {
+      const response = await api.post<undefined>(CREATE_MEMBER_ROUTE, user);
 
-  logout: async () => {
-    return new Promise((resolve) => {
-      resolve(true)
-    });
+      return response.data;
+    } catch (err) {
+      throw handleApiAxiosError(err, "Ocorreu um erro ao tentar registrar-se");
+    }
   },
 }
 

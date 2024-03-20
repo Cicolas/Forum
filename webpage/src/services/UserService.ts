@@ -1,57 +1,51 @@
-import IToken from "../utils/interfaces/token";
 import { O } from "ts-toolbelt";
 import IUser from "../utils/interfaces/user";
 import { Role } from "../utils/types/roles";
 import { Permission } from "../utils/types/permissions";
+import { api } from "../lib/axios";
+import { handleApiAxiosError } from "../utils/errorHandledRequest";
+import { TimestampedResponse } from "../utils/types/timestampedResponse";
 
 type CurrentUserResponse = O.Merge<IUser, {roles: Role[], permissions: Permission[]}>;
-
-const user = {
-  id: "123",
-  name: "user",
-  email: "nicolas.mnw@gmail.com",
-  avatarUrl: "https://avatars.githubusercontent.com/u/32042329?v=4",
-};
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 const UserService = {
   getUser: async (name?: string): Promise<IUser[]> => {
-    return new Promise((resolve) => {
-      resolve([user].filter(value => value.name === name) as IUser[]);
-    });
+    try {
+      const response = await api.get<TimestampedResponse<IUser>[]>("/users", {
+        params: {
+          name,
+        }
+      });
+
+      const users = response.data.map(user => ({
+        ...user,
+        createdAt: new Date(user.createdAt * 1000),
+      }));
+
+      return users;
+    } catch (err) {
+      throw handleApiAxiosError(err, "Ocorreu um erro ao buscar usuario");
+    }
   },
 
   updateUser: async (user: IUser): Promise<IUser> => {
-    return new Promise((resolve) => {
-      resolve(user);
-    });
+    throw new Error("Not implemented");
   },
 
   currentUser: async (): Promise<CurrentUserResponse> => {
-    return new Promise((resolve) => {
-      resolve({
-        ...user,
-        roles: ["admin", "member"],
-        permissions: [
-          "list-permissions",
-          "create-permission",
-          "delete-permission",
-          "list-roles",
-          "create-role",
-          "delete-role",
-          "update-user",
-          "delete-user",
-          "create-admin",
-          "create-category",
-          "update-category",
-          "delete-category",
-          "create-contribution",
-          "update-contribution",
-          "delete-contribution",
-          "rank-contribution",
-        ],
-      } as CurrentUserResponse);
-    });
+    try {
+      const response = await api.get<TimestampedResponse<CurrentUserResponse>>("/users/current");
+
+      const user = {
+        ...response.data,
+        createdAt: new Date(response.data.createdAt * 1000),
+      };
+
+      return user;
+    } catch (err) {
+      throw handleApiAxiosError(err, "Ocorreu um erro ao buscar usuario");
+    }
   },
 }
 

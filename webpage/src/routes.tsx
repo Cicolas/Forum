@@ -52,7 +52,9 @@ const router = createBrowserRouter(
           path="category/:categoryName"
           element={<CategoryFeedPage />}
           loader={({ params }) =>
-            PostService.getAllPostByCategory(params.categoryName as string)
+            PostService.getAllPost({
+              category: params.categoryName as string
+            })
           }
         ></Route>
       </Route>
@@ -75,8 +77,8 @@ const router = createBrowserRouter(
         element={<UserPage />}
         loader={async ({ params }) =>
           ({
-            posts: await PostService.getAllPost({author: params.userId as string}),
             user: (await UserService.getUser(params.userId as string))[0],
+            posts: await PostService.getAllPost({author: params.userId as string}),
           })
         }
       ></Route>

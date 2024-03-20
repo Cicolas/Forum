@@ -1,19 +1,19 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 const LikeService = {
   likePost: async (postId: string) => {
-    return true;
+    throw new Error("Not implemented");
   },
 
   dislikePost: async (postId: string) => {
-    return true;
+    throw new Error("Not implemented");
   },
 
   likeComment: async (commentId: string) => {
-    return true;
+    throw new Error("Not implemented");
   },
 
   dislikeComment: async (commentId: string) => {
-    return true;
+    throw new Error("Not implemented");
   },
 }
 

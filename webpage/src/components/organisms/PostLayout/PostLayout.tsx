@@ -79,11 +79,11 @@ export function PostLayout(
   const navigate = useNavigate();
   const { user, permissions } = useContext(AuthContext);
 
-  const canCreate = permissions.includes("create-contribution");
-  const canUpdate = permissions.includes("update-contribution") &&
+  const canCreate = permissions?.includes("create-contribution");
+  const canUpdate = permissions?.includes("update-contribution") &&
                     author === user?.name;
-  const canDelete = permissions.includes("delete-contribution");
-  const canRank = permissions.includes("rank-contribution");
+  const canDelete = permissions?.includes("delete-contribution");
+  const canRank = permissions?.includes("rank-contribution");
 
   const [likeState, setLikeState] = useState<VoteType>("undefined");
 
@@ -104,7 +104,7 @@ export function PostLayout(
 
   return <>
     <CategoryFormModal
-      open={categoryModalOpen && canUpdate}
+      open={categoryModalOpen && !!canUpdate}
       requestClose={() => setCategoryModalOpen(false)}
       onSubmit={(cat) => {if (onCategoriesChange) onCategoriesChange(cat)}}
     >

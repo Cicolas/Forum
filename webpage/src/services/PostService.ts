@@ -2,55 +2,59 @@
 import { O } from "ts-toolbelt";
 import { api } from "../lib/axios";
 import { IPost } from "../utils/interfaces/post"
+import { handleApiAxiosError } from "../utils/errorHandledRequest";
+import { IThread } from "../utils/interfaces/thread";
+import { TimestampedResponse } from "../utils/types/timestampedResponse";
 
-type CreatePostRequest = O.Omit<IPost, "createdAt" | "lastUpdate" | "id" | "rank">;
+type CreatePostRequest = O.Pick<IPost, "title" | "content" | "author" | "categories">;
 type GetAllPostQuery = {
   category?: string;
   author?: string;
   title?: string;
 }
 
-const posts: IPost[] = [
-  {
-    id: "1234",
-    rank: {upVotes: [], downVotes: []},
-    title: "Teste muito absurdo",
-    categories: ["Brasil", "Humor"],
-    author: "Cicolas",
-    content: "Lorem Ipsun Dolor Sit Amet.",
-    createdAt: new Date(),
-    lastUpdate: new Date()
-  }
-]
-
 const PostService = {
-  getPostById: async (id: string) => {
-    // TODO: Adicionar MOCK_API env
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve(posts.find(p => p.id === id));
-      })
-    })
+  getPostById: async (id: string): Promise<IThread> => {
+    try {
+      const response = await api.get<TimestampedResponse<IThread>>(`/posts/${id}`);
+
+      const thread = {
+        ...response.data,
+        createdAt: new Date(response.data.createdAt * 1000),
+        lastUpdate: new Date(response.data.lastUpdate * 1000),
+      };
+
+      console.log(thread.createdAt);
+
+      return thread;
+    } catch (err) {
+      throw handleApiAxiosError(err, "Ocorreu um erro ao encontrar o post");
+    }
   },
 
-  getAllPost: async (params?: GetAllPostQuery) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve(posts);
-      })
-    });
-  },
+  getAllPost: async (params?: GetAllPostQuery): Promise<IPost[]> => {
+    try {
+      const response = await api.get<TimestampedResponse<IPost>[]>("/posts", {
+        params: {
+          category: params?.category,
+          author: params?.author,
+        }
+      });
 
-  getAllPostByCategory: async (name: string) => {
-    return new Promise((resolve, reject) => {
-      resolve(posts);
-    });
+      const posts = response.data.map(post => ({
+        ...post,
+        createdAt: new Date(post.createdAt * 1000),
+        lastUpdate: new Date(post.lastUpdate * 1000),
+      }));
+
+      return posts;
+    } catch (err) {
+      throw handleApiAxiosError(err, "Ocorreu um erro ao listar os posts");
+    }
   },
 
   createPost: async (data: CreatePostRequest) => {
-    return new Promise((resolve, reject) => {
-      resolve(data);
-    });
+    throw new Error("Not implemented");
   }
 }
 

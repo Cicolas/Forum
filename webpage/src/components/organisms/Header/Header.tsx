@@ -27,7 +27,7 @@ export function Header() {
         {authenticated ? (
           <div className="flex flex-row gap-4 items-center">
             <span className="hidden md:inline italic font-light">
-              Olá! Elon Musk
+              Olá! {user!.name}
             </span>
             <button
               data-tooltip-id="tooltip-controller"
@@ -35,7 +35,7 @@ export function Header() {
               onClick={handleLogout}
               className="group relative flex w-8 h-8 items-center justify-center gap-4 bg-silver-chalice-400 rounded-full overflow-hidden cursor-pointer"
             >
-              <img className="filter group-hover:brightness-50" src="https://avatars.githubusercontent.com/u/32042329?v=4" />
+              <img className="filter group-hover:brightness-50" src={user!.avatarUrl} />
               <SignOut className="absolute text-serenade-50 hidden group-hover:inline" weight="bold" size={18}></SignOut>
               {/* <User size={32}></User> */}
             </button>

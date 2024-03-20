@@ -26,7 +26,7 @@ type UserDetailsProps = {
 
 function UserDetails({ name, createdAt }: UserDetailsProps) {
   const { user, permissions } = useContext(AuthContext);
-  const canRename = permissions.includes("update-user") &&
+  const canRename = permissions?.includes("update-user") &&
                     user?.name === name;
 
   const [isEditing, setIsEditing] = useState(false);
@@ -49,7 +49,9 @@ function UserDetails({ name, createdAt }: UserDetailsProps) {
   }
 
   return <div className="flex py-4 items-center gap-4 self-stretch">
-    <img className="w-16 rounded-full" src="https://avatars.githubusercontent.com/u/32042329?v=4" />
+    <button className="w-16 aspect-square rounded-full bg-silver-chalice-400">
+      <img className="" src={user?.avatarUrl} />
+    </button>
     <div className="items-start gap-2 leading-5">
       <div className="flex flex-row items-center justify-start gap-2">
         <TitleInputWrapper
@@ -72,7 +74,7 @@ function UserDetails({ name, createdAt }: UserDetailsProps) {
           <Pencil
             size={24}
             weight="bold"
-            className="text-silver-chalice-400"
+            className="text-silver-chalice-400 cursor-pointer"
             onClick={() => setIsEditing(true)}
           >
           </Pencil>
@@ -80,7 +82,7 @@ function UserDetails({ name, createdAt }: UserDetailsProps) {
       </div>
       <Spacer>
         <Label color="light-gray" light>Membro desde:</Label>
-        <Label color="light-gray"> {dayjs(createdAt).locale("pt-br").format('MMMM[ de ]YYYY')}</Label>
+        <Label color="light-gray"> {dayjs(user?.createdAt).locale("pt-br").format('MMMM[ de ]YYYY')}</Label>
       </Spacer>
     </div>
   </div>
@@ -90,7 +92,7 @@ export function UserPage() {
   const { user, posts }: LoaderDataValue = useLoaderData() as LoaderDataValue;
 
   return <Container>
-    <UserDetails name={user?.name??""} createdAt={new Date(0)}></UserDetails>
+    <UserDetails name={user?.name??""} createdAt={user!.createdAt}></UserDetails>
     <PostListing title="Atividade" posts={posts??[]}></PostListing>
   </Container>
 }

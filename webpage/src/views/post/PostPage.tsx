@@ -4,6 +4,7 @@ import { PostLayout } from "../../components/organisms/PostLayout/PostLayout";
 import { useContext, useEffect, useState } from "react";
 import { CategoryContext } from "../../context/CategoryContext";
 import { ICategory } from "../../utils/interfaces/category";
+import { IThread } from "../../utils/interfaces/thread";
 
 // const _comment: IComment = {
 //   id: "12345",
@@ -16,28 +17,13 @@ import { ICategory } from "../../utils/interfaces/category";
 // }
 
 export function PostPage() {
-  const { categories, getCategories } = useContext(CategoryContext);
-  const post = useLoaderData() as IPost;
-  const [postCategories, setPostCategories] = useState<ICategory[]>([]);
-
-  useEffect(() => {
-    async function loadCategoriesByName(categoryNames: string[]) {
-      if (!categories) await getCategories();
-
-      setPostCategories(
-        categories!.filter(value => categoryNames.includes(value.name))
-      );
-    }
-
-    loadCategoriesByName(post.categories);
-  }, [categories, getCategories, post.categories]);
-
+  const post = useLoaderData() as IThread;
 
   return <PostLayout
     id={post.id}
     title={post.title}
-    author={post.author}
-    categories={postCategories}
+    author={post.author.name}
+    categories={post.categories}
     content={post.content}
     createdAt={post.createdAt}
     likable

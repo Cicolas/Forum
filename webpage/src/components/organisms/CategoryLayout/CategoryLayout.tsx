@@ -17,11 +17,11 @@ export function CategoryLayout({ isAdmin }: CategoryLayoutProps) {
   const { categories, getCategories } = useContext(CategoryContext);
 
   const { permissions } = useContext(AuthContext);
-  const canCreate = permissions.includes("create-category");
+  const canCreate = permissions?.includes("create-category");
 
-  const canConfig = permissions.includes("create-category") ||
-                    permissions.includes("update-category") ||
-                    permissions.includes("delete-category");
+  const canConfig = permissions?.includes("create-category") ||
+                    permissions?.includes("update-category") ||
+                    permissions?.includes("delete-category");
 
   useEffect(() => {
     if (!categories)

@@ -61,7 +61,7 @@ export function CategoryForm({defaultName, defaultDescription, defaultColor, isC
   const navigate = useNavigate();
 
   const { permissions } = useContext(AuthContext);
-  const canDelete = permissions.includes("delete-category");
+  const canDelete = permissions?.includes("delete-category");
 
   const {
     handleSubmit,
