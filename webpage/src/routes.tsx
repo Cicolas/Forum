@@ -36,33 +36,20 @@ const router = createBrowserRouter(
         <Route
           path=""
           element={<FeedPage />}
-          loader={({ params }) =>
-            PostService.getAllPost({
-              title: params.title??undefined,
-              author: params.author??undefined,
-            })
-          }
         ></Route>
         <Route
           path="recent"
           element={<RecentFeedPage />}
-          loader={PostService.getAllPost}
         ></Route>
         <Route
           path="category/:categoryName"
           element={<CategoryFeedPage />}
-          loader={({ params }) =>
-            PostService.getAllPostByCategory(params.categoryName as string)
-          }
         ></Route>
       </Route>
       <Route path="post">
         <Route
           path=":postId"
           element={<PostPage />}
-          loader={({ params }) =>
-            PostService.getPostById(params.postId as string)
-          }
         ></Route>
         <Route
           path="new"
@@ -71,14 +58,8 @@ const router = createBrowserRouter(
         </Route>
       </Route>
       <Route
-        path="user/:userId"
+        path="user/:userName"
         element={<UserPage />}
-        loader={async ({ params }) =>
-          ({
-            posts: await PostService.getAllPost({author: params.userId as string}),
-            user: (await UserService.getUser(params.userId as string))[0],
-          })
-        }
       ></Route>
     </Route>
     <Route path="/login" element={<LoginPage />}></Route>

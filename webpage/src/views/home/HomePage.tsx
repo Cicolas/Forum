@@ -12,7 +12,7 @@ export function HomePage() {
   const navigate = useNavigate();
 
   function handleLoginButton() {
-    if (authenticated) navigate("/feed");
+    if (authenticated) navigate("/feed/recent");
     else navigate("/login");
   }
 

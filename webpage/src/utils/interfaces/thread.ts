@@ -1,15 +1,17 @@
 import { Timestamp } from "../types/timestamp";
 import { ICategory } from "./category";
+import { IComment } from "./comment";
 import IUser from "./user";
 
-export interface IPost {
+export interface IThread {
   id: string;
-  author: IUser;
   title: string;
   content: string;
+  author: IUser;
   categories: ICategory[];
   upVotes: string[];
   downVotes: string[];
   createdAt: Timestamp;
   lastUpdate: Timestamp;
+  comments: IComment[];
 }

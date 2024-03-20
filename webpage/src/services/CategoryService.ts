@@ -1,56 +1,61 @@
 import { O } from "ts-toolbelt";
 import { ICategory } from "../utils/interfaces/category";
+import { api } from "../lib/axios";
+import { handleApiAxiosError } from "../utils/errorHandledRequest";
 
 export type CreateCategoryRequest = O.Omit<ICategory, "createdAt">;
 export type UpdateCategoryRequest = O.Omit<ICategory, "createdAt">;
 
-let categories: ICategory[] = [
-  {name: "Brasil", color: "#6D8C003D", description: "Posts relacionado com o Brasil", createdAt: new Date()},
-  {name: "Humor", color: "#BD613C40", description: "Posts de humor duvidoso", createdAt: new Date()},
-]
-
 /* eslint-disable @typescript-eslint/no-unused-vars */
 const CategoryService = {
   getCategories: async (): Promise<ICategory[]> => {
-    return new Promise((resolve) => {
-      resolve(categories)
-    });
+    try {
+      const response = await api.get<ICategory[]>("/categories", {});
+
+      return response.data;
+    } catch (err) {
+      throw handleApiAxiosError(err, "Ocorreu um erro ao listar as categorias");
+    }
   },
 
   getCategoryByName: async (name: string): Promise<ICategory> => {
-    return new Promise((resolve) => {
-      resolve(categories.filter(value => value.name === name)[0]);
-    });
+    try {
+      const response = await api.get<ICategory>("/categories", {});
+
+      return response.data;
+    } catch (err) {
+      throw handleApiAxiosError(err, "Ocorreu um erro ao listar as categorias");
+    }
   },
 
   createCategory: async (category: CreateCategoryRequest): Promise<ICategory> => {
-    return new Promise((resolve) => {
-      const newCategory = {...category, "createdAt": new Date()};
-      categories.push(newCategory)
-      console.log(categories);
+    try {
+      const response = await api.post<ICategory>("/categories", category);
 
-      resolve(newCategory)
-    });
+      return response.data;
+    } catch (err) {
+      throw handleApiAxiosError(err, "Ocorreu um erro ao criar a categoria");
+    }
   },
 
   updateCategory: async (category: UpdateCategoryRequest): Promise<ICategory> => {
-    return new Promise((resolve) => {
-      categories = categories.map(value => {
-        if (value.name === category.name)
-          return {...category, "createdAt": value.createdAt};
-        else
-          return value;
-      })
+    try {
+      const response = await api.put<ICategory>(`/categories/${category.name}`, category);
 
-      resolve(categories.filter(value => value.name === category.name)[0])
-    });
+      return response.data;
+    } catch (err) {
+      throw handleApiAxiosError(err, "Ocorreu um erro ao atualizar a categoria");
+    }
   },
 
   deleteCategory: async (name: string) => {
-    return new Promise((resolve) => {
-      categories = categories.filter(value => value.name !== name)
-      resolve(categories);
-    });
+    try {
+      const response = await api.delete<undefined>(`/categories/${name}`);
+
+      return response.data;
+    } catch (err) {
+      throw handleApiAxiosError(err, "Ocorreu um erro ao deletar a categoria");
+    }
   },
 }
 

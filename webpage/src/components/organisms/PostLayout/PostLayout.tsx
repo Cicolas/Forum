@@ -1,43 +1,35 @@
-import dayjs from "dayjs";
-import { Bullet } from "../../atoms/Bullet/Bullet";
 import { Container } from "../../atoms/Container/Container";
 import { Content } from "../../atoms/Content/Content";
 import { Label } from "../../atoms/Label/Label";
 import { Spacer } from "../../atoms/Spacer/Spacer";
-import { TextArea } from "../../atoms/TextArea/TextArea";
 import { UserLink } from "../../atoms/UserLink/UserLink";
 import { CategoryChip } from "../../molecules/Chips/CategoryChip";
 import { LikeButton } from "../../molecules/LikeButton/LikeButton";
 import { ICategory } from "../../../utils/interfaces/category";
-import { IComment } from "../../../utils/interfaces/comment";
-import { ChangeEventHandler, ReactNode, useContext, useState } from "react";
-import LikeService from "../../../services/LikeService";
+import { ChangeEventHandler, ReactNode, useContext, useEffect, useState } from "react";
+import RankService, { RankAction } from "../../../services/RankService";
 import { VoteType } from "../../../utils/types/vote";
 import { AddPostCategoryChip } from "../../molecules/Chips/AddPostCategoryChip";
-import { Button } from "../../atoms/Button/Button";
 import { AuthContext } from "../../../context/AuthContext";
 import { TitleInputWrapper } from "../../molecules/TitleInputWrapper/TitleInputWrapper";
 import { CategoryFormModal } from "../CategoryFormModal/CategoryFormModal";
 import { Chip } from "../../atoms/Chips/Chip";
-import { FieldErrors, UseFormHandleSubmit } from "react-hook-form";
-import { newPostFormData } from "../../../views/post/NewPostPage";
 import { useNavigate } from "react-router-dom";
+import { IThread } from "../../../utils/interfaces/thread";
+import { countRank } from "../../../utils/countRank";
+import { PostContent } from "../PostContent/PostContent";
+import { PostContentForm } from "../PostContentForm/PostContentForm";
+import { CommentSection } from "../CommentSection/CommentSection";
+import { toast } from "react-toastify";
+import { getUserRankState } from "../../../utils/getUserRankState";
+import { voteContribution } from "../../../utils/voting";
 
 type PostLayoutProps = {
   likable?: boolean;
   editable?: boolean;
-  comments?: IComment[];
-  id?: string;
-  title: string;
-  author: string;
-  categories: {name: string, color: string}[];
-  content: string;
-  createdAt?: Date;
+  post: IThread;
 
-  isSubmiting?: boolean;
-  errors?: FieldErrors<newPostFormData>;
-  handleSubmit?: UseFormHandleSubmit<newPostFormData>;
-  onSubmit?: (data: newPostFormData) => Promise<void>;
+  onSubmit?: () => Promise<void>;
 
   onCategoriesChange?: (categories: ICategory[]) => void;
   onTitleChange?: ChangeEventHandler<HTMLInputElement>;
@@ -47,14 +39,12 @@ type PostLayoutProps = {
 type PostWrapperProps = {
   editable?: boolean;
   children: ReactNode;
-  handleSubmit?: UseFormHandleSubmit<newPostFormData>;
-  onSubmit?: (data: newPostFormData) => Promise<void>;
+  onSubmit?: () => Promise<void>;
 }
 
-function PostWrapper({ children, editable, handleSubmit, onSubmit }: PostWrapperProps) {
+function PostWrapper({ children, editable, onSubmit }: PostWrapperProps) {
   function safeHandleSubmit() {
-    if (handleSubmit && onSubmit)
-      return handleSubmit(onSubmit);
+    if (onSubmit) return onSubmit;
   }
 
   return <>{editable ?
@@ -70,56 +60,84 @@ function PostWrapper({ children, editable, handleSubmit, onSubmit }: PostWrapper
 }
 
 export function PostLayout(
-  { id, title, author, categories,
-    content, createdAt, likable,
-    editable, comments, onTitleChange,
-    onContentChange, onCategoriesChange,
-    isSubmiting, errors, handleSubmit, onSubmit
+  { post,
+    likable,
+    editable,
+    onTitleChange,
+    onContentChange,
+    onCategoriesChange,
+    onSubmit
   }: PostLayoutProps) {
   const navigate = useNavigate();
   const { user, permissions } = useContext(AuthContext);
 
-  const canCreate = permissions.includes("create-contribution");
-  const canUpdate = permissions.includes("update-contribution") &&
-                    author === user?.name;
-  const canDelete = permissions.includes("delete-contribution");
-  const canRank = permissions.includes("rank-contribution");
+  const {
+    id,
+    title,
+    author,
+    categories,
+    content,
+    createdAt
+  } = post;
 
-  const [likeState, setLikeState] = useState<VoteType>("undefined");
+  const likeCount = countRank(post);
 
-  const [categoryModalOpen, setCategoryModalOpen] = useState(false);
+  const canCreateAndUpdate = permissions?.includes("update-contribution") &&
+                             author.name === user?.name;
+  const canDelete = permissions?.includes("delete-contribution") &&
+                    author.name === user?.name;
+  const canRank = permissions?.includes("rank-contribution");
 
-  const handleVote = (vote: VoteType) => {
-    if (!id) return;
+  const [ likeState, setLikeState ] = useState<VoteType>();
+  const [ hasVoted, setHasVoted ] = useState<VoteType>();
 
-    const action = vote === "upvote" ? LikeService.likePost : LikeService.dislikePost;
+  const [ categoryModalOpen, setCategoryModalOpen ] = useState(false);
+  const [ isSubmiting, setIsSubmiting ] = useState(false);
 
-    action(id).then(() => {
-      if (likeState === vote)
-        setLikeState("undefined");
-      else
-        setLikeState(vote);
+  useEffect(() => {
+    if (user) {
+      const rank = getUserRankState(post, user.id);
+      setHasVoted(rank);
+      setLikeState(rank);
+    }
+  }, [user, post])
+
+  const handleVote = async (rank: VoteType) => {
+    voteContribution({
+      user,
+      contributionId: id,
+      rank,
+      likeState,
+      setLikeState
     });
+  }
+
+  const handleSubmit = async() => {
+    if (onSubmit) {
+      setIsSubmiting(true);
+      await onSubmit();
+      setIsSubmiting(false);
+    }
   }
 
   return <>
     <CategoryFormModal
-      open={categoryModalOpen && canUpdate}
+      open={categoryModalOpen && !!canCreateAndUpdate}
       requestClose={() => setCategoryModalOpen(false)}
       onSubmit={(cat) => {if (onCategoriesChange) onCategoriesChange(cat)}}
     >
     </CategoryFormModal>
 
     <Container className="py-4">
-      <PostWrapper handleSubmit={handleSubmit} onSubmit={onSubmit} editable={editable && canUpdate}>
+      <PostWrapper onSubmit={handleSubmit} editable={editable && canCreateAndUpdate}>
         <div className="flex flex-row justify-between items-center self-stretch">
           <div className="flex flex-col items-start gap-1">
             <Spacer>
-              <UserLink to="cicolas">
-                {author}
+              <UserLink to={author}>
+                {author.name}
               </UserLink>
               &nbsp;
-              <Label light>em</Label>
+              {categories.length ? <Label light>em</Label> : ""}
               &nbsp;
               {categories.map((category) => <>
                 {editable ?
@@ -128,8 +146,7 @@ export function PostLayout(
                   <CategoryChip {...category}></CategoryChip>
                 }
                 &nbsp;
-              </>
-              )}
+              </>)}
               {editable &&
                 <AddPostCategoryChip
                   onClick={(ev) => {
@@ -152,12 +169,13 @@ export function PostLayout(
 
           {likable &&
             <LikeButton
-              count={24}
+              count={likeCount??0}
               disabled={!canRank}
               orientation="horizontal"
               state={likeState}
-              onLike={handleVote.bind(undefined, "upvote")}
-              onDislike={handleVote.bind(undefined, "downvote")}
+              hasVoted={hasVoted}
+              onLike={() => handleVote("upvote")}
+              onDislike={() => handleVote("downvote")}
               className="hidden md:flex"
             >
             </LikeButton>
@@ -166,80 +184,23 @@ export function PostLayout(
 
         <Content className="flex flex-col gap-2 self-stretch">
           {!editable ?
-            content
+            <PostContent content={content} createdAt={createdAt}></PostContent>
             :
-            <TextArea
-              placeholder={"Conteúdo do post"}
-              value={content}
-              onChange={onContentChange}
-              minHeight="10rem"
+            <PostContentForm
+              content={content}
+              onContentChange={onContentChange!}
+              isSubmiting={isSubmiting}
+              handleSubmit={handleSubmit}
+              onCancel={() => navigate(`/post/${id}`)}
             >
-            </TextArea>
-          }
-
-          {!editable &&
-            <Spacer className="text-silver-chalice-400 font-serif">
-              <Label>
-                {dayjs(createdAt).format("HH:mm")}
-              </Label>
-              &nbsp;
-              <Bullet/>
-              &nbsp;
-              <Label>
-                {dayjs(createdAt).locale("pt-br").format('DD[ de ]MMMM[ de ]YYYY')}
-              </Label>
-            </Spacer>
-          }
-
-          {editable && canCreate &&
-            <div className="self-end pt-4 gap-2 inline-flex">
-              <Button
-                text={"Descartar"}
-                action="cancel"
-                className="py-2 px-4"
-                onClick={(ev) => {
-                  navigate(-1);
-                  ev.preventDefault()
-                }}
-              >
-              </Button>
-              <Button
-                text="Salvar"
-                disabled={isSubmiting}
-                action="submit"
-                onClick={() => {}}
-                className="py-2 px-4"
-              >
-              </Button>
-            </div>
+            </PostContentForm>
           }
         </Content>
       </PostWrapper>
 
-    {/* <Content>
-      <div className="pb-2 self-stretch border-b-2 border-solid border-silver-chalice-400">
-        <Title className="tracking-wider">Comentários</Title>
-      </div>
-
-      <div className="flex flex-row pr-4 pl-1 pt-4 content-between items-center self-stretch gap-2">
-        <TextArea
-          value={comment}
-          onChange={(ev) => setComment(ev.target.value)}
-          placeholder="Adicionar um Comentário"
-          minHeight="2.5em"
-          className="flex-grow flex-shrink-0"
-          borderless
-        >
-        </TextArea>
-
-        <KeyReturn size={32} className="text-silver-chalice-400 cursor-pointer">
-        </KeyReturn>
-      </div>
-    </Content>
-
-    <List>
-      <Comment value={_comment}></Comment>
-    </List> */}
+      {!editable &&
+        <CommentSection postId={id} comments={post.comments}></CommentSection>
+      }
     </Container>
   </>
 }

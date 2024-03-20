@@ -16,11 +16,15 @@ const styleAction = {
 }
 
 export function Button({ text, disabled, onClick, className, action }: ButtonProps) {
-  return <button onClick={onClick} className={`
-    flex rounded-lg ${styleAction[action]} items-center justify-center
-    ${disabled ? "cursor-wait bg-shark-950 bg-opacity-25" : ""}
-    ${className}
-  `}>
+  return <button
+    disabled={disabled}
+    onClick={onClick}
+    className={`
+      flex rounded-lg ${styleAction[action]} items-center justify-center
+      ${disabled ? "cursor-wait bg-shark-950 bg-opacity-25" : ""}
+      ${className}
+    `}
+  >
     {text}
   </button>
 }

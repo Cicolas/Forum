@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useCallback, useState } from "react";
 import { ICategory } from "../utils/interfaces/category";
 import { toast } from "react-toastify";
 import CategoryService, { CreateCategoryRequest, UpdateCategoryRequest } from "../services/CategoryService";
@@ -16,7 +16,7 @@ export const CategoryContext = createContext<ICategoryContext>({} as ICategoryCo
 export function CategoryProvider({ children }: { children: React.ReactNode }) {
   const [categories, setCategories] = useState<ICategory[]>();
 
-  async function getCategories() {
+  const getCategories = useCallback(async function() {
     try {
       const response = await CategoryService.getCategories();
 
@@ -24,52 +24,40 @@ export function CategoryProvider({ children }: { children: React.ReactNode }) {
     } catch(err) {
       console.error(err);
     }
-  }
+  }, []);
 
   async function createCategory(data: CreateCategoryRequest) {
-    try {
-      const response = await CategoryService.createCategory(data);
+    const response = await CategoryService.createCategory(data);
 
-      const categorySet = new Set([
-        ...(categories??[]), response
-      ])
+    const categorySet = new Set([
+      ...(categories??[]), response
+    ])
 
-      setCategories(Array.from(categorySet))
+    setCategories(Array.from(categorySet))
 
-      toast.info(`${data.name} criada com sucesso!`);
-      console.log(response);
-    } catch (err) {
-      toast.error("Erro ao criar a categoria!");
-    }
+    toast.info(`${data.name} criada com sucesso!`);
+    console.log(response);
   }
 
   async function updateCategory(data: UpdateCategoryRequest) {
-    try {
-      const response = await CategoryService.updateCategory(data);
+    const response = await CategoryService.updateCategory(data);
 
-      setCategories((prevState) =>
-        prevState?.map(value => value.name === response.name ? response : value)
-      );
+    setCategories((prevState) =>
+      prevState?.map(value => value.name === response.name ? response : value)
+    );
 
-      toast.info(`${data.name} alterada com sucesso!`);
-      console.log(response);
-    } catch (err) {
-      toast.error("Erro ao atualizar a categoria!");
-    }
+    toast.info(`${data.name} alterada com sucesso!`);
+    console.log(response);
   }
 
   async function deleteCategory(name: string) {
-    try {
-      await CategoryService.deleteCategory(name);
+    await CategoryService.deleteCategory(name);
 
-      setCategories((prevState) =>
-        prevState?.filter(value => value.name !== name)
-      );
+    setCategories((prevState) =>
+      prevState?.filter(value => value.name !== name)
+    );
 
-      toast.info(`${name} deletada com sucesso!`);
-    } catch (err) {
-      toast.error("Erro ao remover a categoria!");
-    }
+    toast.info(`${name} deletada com sucesso!`);
   }
 
   return <CategoryContext.Provider value={{

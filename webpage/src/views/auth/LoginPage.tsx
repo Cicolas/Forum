@@ -48,7 +48,7 @@ export function LoginPage() {
       toast.info("Login realizado com sucesso!");
     } catch (err) {
       if (err instanceof Error) {
-        toast.warn(err.message);
+        toast.error(err.message);
       } else {
         throw err;
       }

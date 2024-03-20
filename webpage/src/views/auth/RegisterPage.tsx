@@ -21,7 +21,7 @@ const registerFormSchema = z.object({
     .email("Deve ser um email válido"),
   password: z.string()
     .min(1, "Senha é obrigatória!"),
-  avatarUrl: z.string()
+  avatarUrl: z.string().optional()
 })
 
 type registerFormData = z.infer<typeof registerFormSchema>;
@@ -48,12 +48,17 @@ export function RegisterPage() {
 
   async function handleRegister(data: registerFormData) {
     try {
-      await register(data);
+      await register({
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        avatarUrl: data.avatarUrl??""
+      });
       toast.info("Registro realizado com sucesso!");
       navigate("/login");
     } catch (err) {
       if (err instanceof Error) {
-        toast.warn(err.message);
+        toast.error(err.message);
       } else {
         throw err;
       }

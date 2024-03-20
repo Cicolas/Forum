@@ -1,4 +1,4 @@
-import { useLoaderData } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Container } from "../../components/atoms/Container/Container";
 import dayjs from "dayjs";
 import { PostListing } from "../../components/molecules/PostListing/PostListing";
@@ -6,27 +6,23 @@ import { IPost } from "../../utils/interfaces/post";
 import { Pencil, Check } from "phosphor-react";
 import { Spacer } from "../../components/atoms/Spacer/Spacer";
 import { Label } from "../../components/atoms/Label/Label";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import IUser from "../../utils/interfaces/user";
 import { TitleInputWrapper } from "../../components/molecules/TitleInputWrapper/TitleInputWrapper";
 import { toast } from "react-toastify";
 import UserService from "../../services/UserService";
-// import { getAllPostByUser } from "../../services/PostService";
-
-type LoaderDataValue = {
-  user?: IUser;
-  posts?: IPost[];
-}
+import { Timestamp, timestampToDate } from "../../utils/types/timestamp";
+import PostService from "../../services/PostService";
 
 type UserDetailsProps = {
   name: string;
-  createdAt: Date;
+  createdAt: Timestamp;
 }
 
 function UserDetails({ name, createdAt }: UserDetailsProps) {
   const { user, permissions } = useContext(AuthContext);
-  const canRename = permissions.includes("update-user") &&
+  const canRename = permissions?.includes("update-user") &&
                     user?.name === name;
 
   const [isEditing, setIsEditing] = useState(false);
@@ -49,7 +45,9 @@ function UserDetails({ name, createdAt }: UserDetailsProps) {
   }
 
   return <div className="flex py-4 items-center gap-4 self-stretch">
-    <img className="w-16 rounded-full" src="https://avatars.githubusercontent.com/u/32042329?v=4" />
+    <button className="w-16 aspect-square rounded-full bg-silver-chalice-400">
+      <img className="" src={user?.avatarUrl} />
+    </button>
     <div className="items-start gap-2 leading-5">
       <div className="flex flex-row items-center justify-start gap-2">
         <TitleInputWrapper
@@ -72,7 +70,7 @@ function UserDetails({ name, createdAt }: UserDetailsProps) {
           <Pencil
             size={24}
             weight="bold"
-            className="text-silver-chalice-400"
+            className="text-silver-chalice-400 cursor-pointer"
             onClick={() => setIsEditing(true)}
           >
           </Pencil>
@@ -80,17 +78,51 @@ function UserDetails({ name, createdAt }: UserDetailsProps) {
       </div>
       <Spacer>
         <Label color="light-gray" light>Membro desde:</Label>
-        <Label color="light-gray"> {dayjs(createdAt).locale("pt-br").format('MMMM[ de ]YYYY')}</Label>
+        <Label color="light-gray"> {dayjs(timestampToDate(createdAt)).locale("pt-br").format('MMMM[ de ]YYYY')}</Label>
       </Spacer>
     </div>
   </div>
 }
 
 export function UserPage() {
-  const { user, posts }: LoaderDataValue = useLoaderData() as LoaderDataValue;
+  const [ user, setUser ] = useState<IUser>();
+  const [ posts, setPosts ] = useState<IPost[]>();
+
+  const { userName } = useParams();
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const user = await UserService.getUser(userName as string);
+        setUser(user[0]);
+      } catch (error) {
+        if (error instanceof Error)
+          toast.error(error.message);
+      }
+    }
+
+    const fetchPosts = async () => {
+      try {
+        const posts = await PostService.getAllPost({
+          author: userName as string
+        });
+        setPosts(posts);
+      } catch (error) {
+        if (error instanceof Error)
+          toast.error(error.message);
+      }
+    }
+
+    fetchUser();
+    fetchPosts();
+  }, [userName]);
 
   return <Container>
-    <UserDetails name={user?.name??""} createdAt={new Date(0)}></UserDetails>
-    <PostListing title="Atividade" posts={posts??[]}></PostListing>
+    {user &&
+      <UserDetails name={user.name} createdAt={user.createdAt}></UserDetails>
+    }
+    {posts &&
+      <PostListing title="Atividade" posts={posts}></PostListing>
+    }
   </Container>
 }
