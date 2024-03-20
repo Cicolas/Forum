@@ -1,4 +1,4 @@
-import { useLoaderData } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Container } from "../../components/atoms/Container/Container";
 import dayjs from "dayjs";
 import { PostListing } from "../../components/molecules/PostListing/PostListing";
@@ -6,18 +6,14 @@ import { IPost } from "../../utils/interfaces/post";
 import { Pencil, Check } from "phosphor-react";
 import { Spacer } from "../../components/atoms/Spacer/Spacer";
 import { Label } from "../../components/atoms/Label/Label";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import IUser from "../../utils/interfaces/user";
 import { TitleInputWrapper } from "../../components/molecules/TitleInputWrapper/TitleInputWrapper";
 import { toast } from "react-toastify";
 import UserService from "../../services/UserService";
 import { Timestamp, timestampToDate } from "../../utils/types/timestamp";
-
-type LoaderDataValue = {
-  user?: IUser;
-  posts?: IPost[];
-}
+import PostService from "../../services/PostService";
 
 type UserDetailsProps = {
   name: string;
@@ -89,10 +85,44 @@ function UserDetails({ name, createdAt }: UserDetailsProps) {
 }
 
 export function UserPage() {
-  const { user, posts }: LoaderDataValue = useLoaderData() as LoaderDataValue;
+  const [ user, setUser ] = useState<IUser>();
+  const [ posts, setPosts ] = useState<IPost[]>();
+
+  const { userName } = useParams();
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const user = await UserService.getUser(userName as string);
+        setUser(user[0]);
+      } catch (error) {
+        if (error instanceof Error)
+          toast.error(error.message);
+      }
+    }
+
+    const fetchPosts = async () => {
+      try {
+        const posts = await PostService.getAllPost({
+          author: userName as string
+        });
+        setPosts(posts);
+      } catch (error) {
+        if (error instanceof Error)
+          toast.error(error.message);
+      }
+    }
+
+    fetchUser();
+    fetchPosts();
+  }, [userName]);
 
   return <Container>
-    <UserDetails name={user?.name??""} createdAt={user!.createdAt}></UserDetails>
-    <PostListing title="Atividade" posts={posts??[]}></PostListing>
+    {user &&
+      <UserDetails name={user.name} createdAt={user.createdAt}></UserDetails>
+    }
+    {posts &&
+      <PostListing title="Atividade" posts={posts}></PostListing>
+    }
   </Container>
 }

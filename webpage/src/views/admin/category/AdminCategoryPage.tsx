@@ -16,8 +16,8 @@ export function AdminCategoryPage() {
   const { authenticated, permissions } = useContext(AuthContext);
   const { categories, getCategories } = useContext(CategoryContext);
 
-  const canCreate = permissions?.includes("create-category") || true;
-  const canUpdate = permissions?.includes("update-category") || true;
+  const canCreate = permissions?.includes("create-category");
+  const canUpdate = permissions?.includes("update-category");
 
   useEffect(() => {
     // if (!authenticated) {

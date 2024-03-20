@@ -86,7 +86,7 @@ export function PostLayout(
                              author.name === user?.name;
   const canDelete = permissions?.includes("delete-contribution") &&
                     author.name === user?.name;
-  const canRank = permissions?.includes("rank-contribution") || true;
+  const canRank = permissions?.includes("rank-contribution");
 
   const [ likeState, setLikeState ] = useState<VoteType>();
   const [ hasVoted, setHasVoted ] = useState<VoteType>();
@@ -198,32 +198,9 @@ export function PostLayout(
         </Content>
       </PostWrapper>
 
-      <CommentSection postId={id} comments={post.comments}></CommentSection>
-
-    {/* <Content>
-      <div className="pb-2 self-stretch border-b-2 border-solid border-silver-chalice-400">
-        <Title className="tracking-wider">Comentários</Title>
-      </div>
-
-      <div className="flex flex-row pr-4 pl-1 pt-4 content-between items-center self-stretch gap-2">
-        <TextArea
-          value={comment}
-          onChange={(ev) => setComment(ev.target.value)}
-          placeholder="Adicionar um Comentário"
-          minHeight="2.5em"
-          className="flex-grow flex-shrink-0"
-          borderless
-        >
-        </TextArea>
-
-        <KeyReturn size={32} className="text-silver-chalice-400 cursor-pointer">
-        </KeyReturn>
-      </div>
-    </Content>
-
-    <List>
-      <Comment value={_comment}></Comment>
-    </List> */}
+      {!editable &&
+        <CommentSection postId={id} comments={post.comments}></CommentSection>
+      }
     </Container>
   </>
 }

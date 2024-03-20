@@ -17,7 +17,7 @@ type ICommentSectionProps = {
 export function CommentSection({ postId, comments }: ICommentSectionProps) {
   const { user, permissions } = useContext(AuthContext);
 
-  const canComment = permissions?.includes("create-contribution") || true;
+  const canComment = permissions?.includes("create-contribution");
 
   const [comment, setComment] = useState("");
   const [commentsList, setCommentsList] = useState<IComment[]>(comments);

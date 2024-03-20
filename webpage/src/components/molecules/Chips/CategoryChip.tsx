@@ -9,7 +9,7 @@ type CategoryChipsProps = {
 export function CategoryChip({ name, color }: CategoryChipsProps) {
   return <Link
     key={name}
-    to={`/feed/category/${name}`}
+    to={`/feed/category/${name}?color=${color.replace("#", "0x")}`}
   >
     <Chip name={name} color={color}></Chip>
   </Link>

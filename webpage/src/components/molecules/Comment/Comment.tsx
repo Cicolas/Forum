@@ -27,7 +27,7 @@ export function Comment({
 }: CommentProps) {
   const { user, permissions } = useContext(AuthContext);
 
-  const canReply = permissions?.includes("create-contribution") || true;
+  const canReply = permissions?.includes("create-contribution");
 
   const {
     id,
