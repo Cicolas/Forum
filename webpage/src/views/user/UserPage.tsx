@@ -12,7 +12,7 @@ import IUser from "../../utils/interfaces/user";
 import { TitleInputWrapper } from "../../components/molecules/TitleInputWrapper/TitleInputWrapper";
 import { toast } from "react-toastify";
 import UserService from "../../services/UserService";
-// import { getAllPostByUser } from "../../services/PostService";
+import { Timestamp, timestampToDate } from "../../utils/types/timestamp";
 
 type LoaderDataValue = {
   user?: IUser;
@@ -21,7 +21,7 @@ type LoaderDataValue = {
 
 type UserDetailsProps = {
   name: string;
-  createdAt: Date;
+  createdAt: Timestamp;
 }
 
 function UserDetails({ name, createdAt }: UserDetailsProps) {
@@ -82,7 +82,7 @@ function UserDetails({ name, createdAt }: UserDetailsProps) {
       </div>
       <Spacer>
         <Label color="light-gray" light>Membro desde:</Label>
-        <Label color="light-gray"> {dayjs(user?.createdAt).locale("pt-br").format('MMMM[ de ]YYYY')}</Label>
+        <Label color="light-gray"> {dayjs(timestampToDate(createdAt)).locale("pt-br").format('MMMM[ de ]YYYY')}</Label>
       </Spacer>
     </div>
   </div>

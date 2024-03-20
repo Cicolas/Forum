@@ -4,7 +4,6 @@ import { Role } from "../utils/types/roles";
 import { Permission } from "../utils/types/permissions";
 import { api } from "../lib/axios";
 import { handleApiAxiosError } from "../utils/errorHandledRequest";
-import { TimestampedResponse } from "../utils/types/timestampedResponse";
 
 type CurrentUserResponse = O.Merge<IUser, {roles: Role[], permissions: Permission[]}>;
 
@@ -12,18 +11,13 @@ type CurrentUserResponse = O.Merge<IUser, {roles: Role[], permissions: Permissio
 const UserService = {
   getUser: async (name?: string): Promise<IUser[]> => {
     try {
-      const response = await api.get<TimestampedResponse<IUser>[]>("/users", {
+      const response = await api.get<IUser[]>("/users", {
         params: {
           name,
         }
       });
 
-      const users = response.data.map(user => ({
-        ...user,
-        createdAt: new Date(user.createdAt * 1000),
-      }));
-
-      return users;
+      return response.data;
     } catch (err) {
       throw handleApiAxiosError(err, "Ocorreu um erro ao buscar usuario");
     }
@@ -35,14 +29,9 @@ const UserService = {
 
   currentUser: async (): Promise<CurrentUserResponse> => {
     try {
-      const response = await api.get<TimestampedResponse<CurrentUserResponse>>("/users/current");
+      const response = await api.get<CurrentUserResponse>("/users/current");
 
-      const user = {
-        ...response.data,
-        createdAt: new Date(response.data.createdAt * 1000),
-      };
-
-      return user;
+      return response.data;
     } catch (err) {
       throw handleApiAxiosError(err, "Ocorreu um erro ao buscar usuario");
     }
