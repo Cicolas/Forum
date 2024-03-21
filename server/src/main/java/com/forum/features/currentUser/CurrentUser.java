@@ -1,8 +1,7 @@
 package com.forum.features.currentUser;
 
-import com.forum.http.HttpEndpointHandler;
-import com.forum.repositories.RolesRepository;
 import com.forum.repositories.UsersRepository;
+import com.forum.http.HttpEndpointHandler;
 
 public class CurrentUser {
   public CurrentUser(UsersRepository usersRepository) {

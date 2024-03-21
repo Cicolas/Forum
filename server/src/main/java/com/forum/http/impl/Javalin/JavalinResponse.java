@@ -2,7 +2,6 @@ package com.forum.http.impl.Javalin;
 
 import com.forum.http.HttpResponse;
 import io.javalin.http.Context;
-import io.javalin.http.Header;
 
 class JavalinResponse implements HttpResponse {
   private Context httpContext;
