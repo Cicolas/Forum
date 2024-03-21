@@ -4,21 +4,7 @@ import { AuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import PostService, { CreatePostRequest } from "../../services/PostService";
 import { toast } from "react-toastify";
-
-// const newPostFormSchema = z.object({
-//   title: z.string()
-//     .min(1, "Título é obrigatório"),
-//   content: z.string()
-//     .min(1, "Contúdo não pode ser vazio"),
-//   categories: z.array(
-//     z.object({
-//       name: z.string(),
-//       color: z.string(),
-//     })
-//   )
-// })
-
-// export type newPostFormData = z.infer<typeof newPostFormSchema>;
+import { ICategory } from "../../utils/interfaces/category";
 
 export function NewPostPage() {
   const navigate = useNavigate();
@@ -26,7 +12,7 @@ export function NewPostPage() {
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [categories, setCategories] = useState<string[]>([]);
+  const [categories, setCategories] = useState<ICategory[]>([]);
 
   const createPost = async () => {
     if (!user) {
@@ -37,7 +23,7 @@ export function NewPostPage() {
     const post: CreatePostRequest = {
       title: title,
       content: content,
-      categoryNames: categories,
+      categoryNames: categories.map(c => c.name),
       authorId: user.id,
     };
 
@@ -72,8 +58,8 @@ export function NewPostPage() {
           id: "",
           title: title,
           content: content,
+          categories: categories,
 
-          categories: [],
           author: user,
           comments: [],
           createdAt: 0,
@@ -84,7 +70,7 @@ export function NewPostPage() {
         onTitleChange={(ev) => setTitle(ev.target.value)}
         onContentChange={(ev) => setContent(ev.target.value)}
         onCategoriesChange={(categories) =>
-          setCategories(categories.map(c => c.name))
+          setCategories(categories)
         }
         onSubmit={createPost}
         editable
