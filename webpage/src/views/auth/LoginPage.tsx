@@ -47,11 +47,8 @@ export function LoginPage() {
       await login(data.email, data.password);
       toast.info("Login realizado com sucesso!");
     } catch (err) {
-      if (err instanceof Error) {
+      if (err instanceof Error)
         toast.error(err.message);
-      } else {
-        throw err;
-      }
     }
   }
 

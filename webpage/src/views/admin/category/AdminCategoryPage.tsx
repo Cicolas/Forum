@@ -1,7 +1,6 @@
 import { useQuery } from "../../../hooks/useQuery"
 import { ICategory } from "../../../utils/interfaces/category";
 import { useContext, useEffect, useState } from "react";
-import CategoryService from "../../../services/CategoryService";
 import { EditCategory } from "./components/EditCategory";
 import { NewCategory } from "./components/NewCategory";
 import { NoCategory } from "./components/NoCategory";

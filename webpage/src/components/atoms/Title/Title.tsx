@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { sizes } from "../../../utils/defaultStyles";
 import { Label } from "../Label/Label";
 
@@ -5,7 +6,7 @@ type TitleProps = {
   size?: keyof typeof sizes;
   className?: string;
 
-  children: string;
+  children: ReactNode;
 }
 
 export function Title({ size, children, className }: TitleProps) {

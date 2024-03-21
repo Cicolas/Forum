@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { Chip } from "../../atoms/Chips/Chip";
 import { X } from "phosphor-react";
 import { Spacer } from "../../atoms/Spacer/Spacer";

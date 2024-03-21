@@ -7,12 +7,10 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { Tooltip } from 'react-tooltip'
-import { LoadingProvider } from './context/LoadingContext';
 import { CategoryProvider } from './context/CategoryContext';
 
 export function App() {
   return <AuthProvider>
-    <LoadingProvider>
       <CategoryProvider>
         <Routes />
         <ToastContainer
@@ -29,7 +27,6 @@ export function App() {
           />
         <Tooltip id="tooltip-controller" />
       </CategoryProvider>
-    </LoadingProvider>
   </AuthProvider>
 }
 

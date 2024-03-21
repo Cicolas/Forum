@@ -6,6 +6,12 @@ import { api } from "../lib/axios";
 import { handleApiAxiosError } from "../utils/errorHandledRequest";
 
 type CurrentUserResponse = O.Merge<IUser, {roles: Role[], permissions: Permission[]}>;
+type UserUpdateRequest = {
+  id: string;
+  name: string;
+  email?: string;
+  avatarUrl: string;
+};
 
 const UserService = {
   getUser: async (name?: string): Promise<IUser[]> => {
@@ -22,7 +28,7 @@ const UserService = {
     }
   },
 
-  updateUser: async (user: IUser): Promise<IUser> => {
+  updateUser: async (user: UserUpdateRequest): Promise<IUser> => {
     try {
       const response = await api.put<IUser>(`/users/${user.id}`, user);
 

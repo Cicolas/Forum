@@ -7,7 +7,6 @@ import { CategoryChip } from "../../molecules/Chips/CategoryChip";
 import { LikeButton } from "../../molecules/LikeButton/LikeButton";
 import { ICategory } from "../../../utils/interfaces/category";
 import { ChangeEventHandler, ReactNode, useContext, useEffect, useState } from "react";
-import RankService, { RankAction } from "../../../services/RankService";
 import { VoteType } from "../../../utils/types/vote";
 import { AddPostCategoryChip } from "../../molecules/Chips/AddPostCategoryChip";
 import { AuthContext } from "../../../context/AuthContext";
@@ -20,7 +19,6 @@ import { countRank } from "../../../utils/countRank";
 import { PostContent } from "../PostContent/PostContent";
 import { PostContentForm } from "../PostContentForm/PostContentForm";
 import { CommentSection } from "../CommentSection/CommentSection";
-import { toast } from "react-toastify";
 import { getUserRankState } from "../../../utils/getUserRankState";
 import { voteContribution } from "../../../utils/voting";
 
@@ -84,8 +82,8 @@ export function PostLayout(
 
   const canCreateAndUpdate = permissions?.includes("update-contribution") &&
                              author.name === user?.name;
-  const canDelete = permissions?.includes("delete-contribution") &&
-                    author.name === user?.name;
+  // const canDelete = permissions?.includes("delete-contribution") &&
+  //                   author.name === user?.name;
   const canRank = permissions?.includes("rank-contribution");
 
   const [ likeState, setLikeState ] = useState<VoteType>();

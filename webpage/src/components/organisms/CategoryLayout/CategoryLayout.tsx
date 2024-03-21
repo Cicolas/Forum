@@ -7,7 +7,6 @@ import { AdminCategoryChip } from "../../molecules/Chips/AdminCategoryChip";
 import { CategoryChip } from "../../molecules/Chips/CategoryChip";
 import { CategoryContext } from "../../../context/CategoryContext";
 import { AuthContext } from "../../../context/AuthContext";
-// import { CategoryChips } from "./Chips/CategoryChips";
 
 type CategoryLayoutProps = {
   isAdmin?: boolean;
