@@ -7,7 +7,4 @@ values
   ("admin", "list-roles"),
   ("admin", "create-role"),
   ("admin", "delete-role"),
-  ("admin", "create-admin"),
-  ("admin", "create-category"),
-  ("admin", "update-category"),
-  ("admin", "delete-category");
+  ("admin", "create-admin");

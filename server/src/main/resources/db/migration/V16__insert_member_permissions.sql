@@ -6,4 +6,7 @@ values
   ("member", "create-contribution"),
   ("member", "update-contribution"),
   ("member", "delete-contribution"),
-  ("member", "rank-contribution");
+  ("member", "rank-contribution"),
+  ("member", "create-category"),
+  ("member", "update-category"),
+  ("member", "delete-category");
