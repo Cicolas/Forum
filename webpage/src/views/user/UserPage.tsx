@@ -17,10 +17,11 @@ import PostService from "../../services/PostService";
 
 type UserDetailsProps = {
   name: string;
+  avatarUrl: string;
   createdAt: Timestamp;
 }
 
-function UserDetails({ name, createdAt }: UserDetailsProps) {
+function UserDetails({ name, avatarUrl, createdAt }: UserDetailsProps) {
   const { user, permissions } = useContext(AuthContext);
   const canRename = permissions?.includes("update-user") &&
                     user?.name === name;
@@ -45,8 +46,8 @@ function UserDetails({ name, createdAt }: UserDetailsProps) {
   }
 
   return <div className="flex py-4 items-center gap-4 self-stretch">
-    <button className="w-16 aspect-square rounded-full bg-silver-chalice-400">
-      <img className="" src={user?.avatarUrl} />
+    <button className="w-16 aspect-square rounded-full bg-silver-chalice-400 overflow-hidden object-cover">
+      <img className="aspect-square" src={avatarUrl} />
     </button>
     <div className="items-start gap-2 leading-5">
       <div className="flex flex-row items-center justify-start gap-2">
@@ -119,7 +120,7 @@ export function UserPage() {
 
   return <Container>
     {user &&
-      <UserDetails name={user.name} createdAt={user.createdAt}></UserDetails>
+      <UserDetails name={user.name} avatarUrl={user.avatarUrl} createdAt={user.createdAt}></UserDetails>
     }
     {posts &&
       <PostListing title="Atividade" posts={posts}></PostListing>

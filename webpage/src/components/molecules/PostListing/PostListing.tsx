@@ -43,7 +43,7 @@ function PostListItem(post: IPost) {
       )}
     </div>
     <div className="text-silver-chalice-400 font-normal word-spacing-2">
-      <UserLink to={author} className="word-spacing-normal">{author.name}</UserLink>
+      <UserLink to={author} className="word-spacing-normal">{author?.name}</UserLink>
       <span className="font-light "> há </span>
       <span className="word-spacing-normal">{timeElapsed}</span>
       <span className="font-light "> {timeElapsed > 1 ? "dias": "dia"}</span>
@@ -57,7 +57,7 @@ export function PostListing({
   where,
   newPostAble
 }: FeedProps) {
-  const newPostLink = "/post/new" + (where ? `?categoryName=${where?.name}` : "");
+  const newPostLink = "/post/new" + (where ? `?categoryName=${where.name}` : "");
 
   const { permissions } = useContext(AuthContext);
   const canCreate = permissions?.includes("create-contribution");
@@ -68,7 +68,7 @@ export function PostListing({
         <h1 className="word-spacing-normal font-bold text-2xl inline">{title}</h1>
         {where && <>
           <span className="text-silver-chalice-400 font-light"> em </span>
-          <CategoryChip name={where.name} color={where.color}></CategoryChip>
+          <CategoryChip name={where.name??""} color={where.color}></CategoryChip>
         </>}
       </Spacer>
       <div className="flex items-baseline gap-2 text-silver-chalice-400 italic cursor-pointer">

@@ -1,5 +1,5 @@
-import './index.css'
-import { Route, createBrowserRouter, createRoutesFromElements, redirect } from 'react-router-dom'
+import './index.css';
+import { Route, createBrowserRouter, createRoutesFromElements, redirect } from 'react-router-dom';
 import { RouterProvider } from 'react-router';
 import { PostPage } from './views/post/PostPage';
 
@@ -10,12 +10,10 @@ import { CategoryFeedPage } from './views/feed/CategoryFeedPage';
 import { LoginPage } from './views/auth/LoginPage';
 import { RegisterPage } from './views/auth/RegisterPage';
 import { UserPage } from './views/user/UserPage';
-import PostService from './services/PostService';
 import { HomePage } from './views/home/HomePage';
 import _404Page from './views/_404Page';
 import { AdminCategoryPage } from './views/admin/category/AdminCategoryPage';
 import { NewPostPage } from './views/post/NewPostPage';
-import UserService from './services/UserService';
 import { FeedPage } from './views/feed/FeedPage';
 
 const redirectLoader = (path: string) => async () => redirect(path);

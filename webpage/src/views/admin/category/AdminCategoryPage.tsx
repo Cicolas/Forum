@@ -37,20 +37,6 @@ export function AdminCategoryPage() {
   const [category, setCategory] = useState<ICategory>();
 
   useEffect(() => {
-    // const fetchCategory = async () => {
-    //   try {
-    //     if (!categoryName) return;
-
-    //     const response = await CategoryService.getCategoryByName(categoryName);
-
-    //     setCategory(response);
-    //   } catch(err) {
-    //     console.error(err);
-    //   }
-    // }
-
-    // fetchCategory();
-
     setCategory(categories?.find(value => value.name === categoryName));
   }, [categoryName, categories]);
 
