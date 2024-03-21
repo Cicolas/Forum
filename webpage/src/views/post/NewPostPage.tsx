@@ -76,8 +76,8 @@ export function NewPostPage() {
           categories: [],
           author: user,
           comments: [],
-          createdAt: new Date(),
-          lastUpdate: new Date(),
+          createdAt: 0,
+          lastUpdate: 0,
           upVotes: [],
           downVotes: [],
         }}

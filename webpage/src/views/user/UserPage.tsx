@@ -3,7 +3,7 @@ import { Container } from "../../components/atoms/Container/Container";
 import dayjs from "dayjs";
 import { PostListing } from "../../components/molecules/PostListing/PostListing";
 import { IPost } from "../../utils/interfaces/post";
-import { Pencil, Check } from "phosphor-react";
+import { Pencil } from "phosphor-react";
 import { Spacer } from "../../components/atoms/Spacer/Spacer";
 import { Label } from "../../components/atoms/Label/Label";
 import { useContext, useEffect, useState } from "react";
