@@ -28,23 +28,29 @@ const colors = [
   "#6D8C003D",
   "#BD613C40",
   "#00628C40",
-  "%picker%"
+  // "%picker%"
 ]
 
+type ColorBoxProps = {
+  color: string;
+  onClick: (color: string) => void;
+}
+
 // TODO: Extract to a separate file
-function ColorBox(color: string) {
+function ColorBox({color, onClick}: ColorBoxProps) {
   if (color === "%picker%") {
-    return <button
+    return <div
       key={color}
       className="w-8 h-8 bg-opacity-25 rounded-lg border-2 border-silver-chalice-400 border-opacity-25 border-neutral-400 cursor-pointer bg-clip-padding"
       style={{backgroundImage: "url(\"/rainbow.jpg\")"}}
-    ></button>
+    ></div>
   }
 
   return <button
     key={color}
     className="w-8 h-8 bg-opacity-25 rounded-lg border-2 border-silver-chalice-400 border-opacity-25 border-neutral-400 cursor-pointer"
     style={{backgroundColor: color}}
+    onClick={(ev) => {onClick(color); ev.preventDefault()}}
   ></button>
 }
 
@@ -136,7 +142,14 @@ export function CategoryForm({defaultName, defaultDescription, defaultColor, isC
           <FormField>
             <Label bold>Cor</Label>
             <div className="h-8 justify-start items-start gap-2 flex">
-              {colors.map(ColorBox)}
+              {colors.map(col => {
+                  return <ColorBox
+                    color={col}
+                    onClick={(color) => setValue("color", color)}
+                  >
+                  </ColorBox>
+                })
+              }
             </div>
           </FormField>
 
